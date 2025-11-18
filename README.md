@@ -28,6 +28,7 @@
 ## Table of Contents
 
 - [Introduction](#introduction)
+- [Terminal Workflow Guides](#terminal-workflow-guides-new) ⭐ **NEW!**
 - [What You'll Learn](#what-youll-learn)
 - [Quick Start](#quick-start)
 - [Repository Structure](#repository-structure)
@@ -39,6 +40,65 @@
 - [Community](#community)
 - [FAQ](#faq)
 - [License](#license)
+
+---
+
+## Terminal Workflow Guides (NEW!)
+
+**Manage your entire game development from the Claude Code terminal!**
+
+We've created comprehensive guides for developers who want to work entirely from the command line:
+
+### 📘 [Complete Terminal Workflow Guide](docs/TERMINAL_WORKFLOW_GUIDE.md)
+
+A comprehensive 1-100 step guide covering everything from project initialization to deployment:
+
+- **Initial Setup**: Environment configuration, tool installation, workspace setup
+- **Project Initialization**: Creating projects, configuring build tools, version control
+- **Development Workflow**: Daily development routines, tmux layouts, file organization
+- **Code Generation with Claude**: Effective prompts for game systems, iterative refinement
+- **Testing & Debugging**: Test setup, debugging strategies, performance profiling
+- **Asset Management**: Organizing assets, optimization pipelines, asset loading
+- **Version Control**: Git workflows, branching strategies, commit conventions
+- **Build & Optimization**: Production builds, bundle analysis, code splitting
+- **Deployment**: Multiple platforms (GitHub Pages, Netlify, Vercel), CI/CD setup
+
+**Perfect for:** Developers who prefer terminal-based workflows and want to leverage Claude Code from the command line.
+
+### ⚡ [Quick Start Checklist](docs/QUICK_START_CHECKLIST.md)
+
+A condensed, printable checklist for daily development:
+
+- One-page project setup commands
+- Daily workflow checklist
+- Feature development checklist
+- Common Claude Code prompts
+- Debug commands reference
+- Git workflow quick reference
+- Terminal productivity tips
+
+**Perfect for:** Quick reference during development, keeping by your workspace.
+
+### Why Use Terminal Workflow?
+
+- **Efficiency**: No context switching between tools
+- **Automation**: Script repetitive tasks
+- **Version Control**: Direct Git integration
+- **Remote Work**: SSH-friendly development
+- **Professional Skills**: Industry-standard workflows
+- **Full Control**: Complete visibility into every operation
+
+**Get Started:**
+```bash
+# Quick project setup
+mkdir my-game && cd my-game
+git init && npm init -y
+npm install --save-dev vite
+mkdir -p src/{game,systems} assets public
+npm run dev
+```
+
+Then start using Claude Code prompts to generate your game systems!
 
 ---
 
