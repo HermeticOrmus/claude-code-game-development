@@ -1,0 +1,910 @@
+# Startup Execution Plan Workflow
+# Category: Strategic Planning + Design System + Technical Architecture
+# Theme: Configurable (default: Gold #D4AF37 / Navy #1B365D)
+#
+# This workflow generates comprehensive execution plans for next-generation
+# developer tools using first-principles thinking and lean startup methodology.
+
+name: startup-execution-plan
+version: 2.0.0
+category: strategic-planning
+
+description: |
+  Generate comprehensive execution plans for developer tool startups.
+  Combines Musk-style first principles with Thiel-style contrarian thinking.
+  Outputs include: philosophy, design system, architecture, roadmap, metrics.
+
+# ============================================================================
+# WORKFLOW CONFIGURATION
+# ============================================================================
+
+config:
+  max_iterations: 5
+  quality_threshold: 0.85
+  complexity_routing:
+    simple: 0.0-0.3    # Direct execution
+    medium: 0.3-0.7    # Multi-approach synthesis
+    complex: 0.7-1.0   # Autonomous evolution
+
+  output_formats:
+    - markdown
+    - yaml
+    - json
+
+  theme:
+    primary: "#D4AF37"      # Gold - actions, focus, premium
+    secondary: "#1B365D"    # Navy - containers, trust, depth
+    background: "#0D1B2A"   # Deep navy
+    surface: "#2A4A7A"      # Elevated elements
+    text_primary: "#FFFFFF"
+    text_secondary: "#A8B5C4"
+    text_muted: "#6B7D8D"
+    success: "#50C878"
+    warning: "#D4AF37"
+    error: "#DC3545"
+    info: "#5BC0DE"
+
+# ============================================================================
+# INPUT SCHEMA
+# ============================================================================
+
+inputs:
+  required:
+    - name: domain
+      type: string
+      description: "The domain/category of tool being built"
+      example: "TUI framework"
+
+    - name: vision
+      type: string
+      description: "One-sentence vision statement"
+      example: "Build the terminal interface that makes all others obsolete"
+
+  optional:
+    - name: ecosystem
+      type: array
+      description: "Existing tools/frameworks to integrate with"
+      example: ["Bubble Tea", "Lip Gloss", "Bubbles", "Huh"]
+
+    - name: theme_colors
+      type: object
+      description: "Override default color scheme"
+      schema:
+        primary: string
+        secondary: string
+
+    - name: philosophy
+      type: enum
+      values: [musk, thiel, bezos, jobs, custom]
+      default: musk_thiel
+      description: "Leadership philosophy to apply"
+
+    - name: timeline_style
+      type: enum
+      values: [phases, sprints, milestones, none]
+      default: phases
+      description: "How to structure the roadmap"
+
+# ============================================================================
+# OUTPUT SCHEMA
+# ============================================================================
+
+outputs:
+  - name: execution_plan
+    type: markdown
+    sections:
+      - first_principles_directives
+      - color_system_architecture
+      - technical_architecture
+      - execution_phases
+      - iterative_meta_prompt
+      - usage_examples
+      - lean_startup_metrics
+      - risk_mitigation
+      - team_resources
+
+  - name: skill_definition
+    type: markdown
+    path: "skills/{domain}-generator/SKILL.md"
+
+  - name: categorical_templates
+    type: javascript
+    path: "examples/{domain}-categorical-templates/"
+
+  - name: iteration_log
+    type: yaml
+    path: ".meta/iteration-log.yaml"
+
+# ============================================================================
+# WORKFLOW PHASES
+# ============================================================================
+
+phases:
+
+  # --------------------------------------------------------------------------
+  # PHASE 0: CONTEXT GATHERING
+  # --------------------------------------------------------------------------
+  - id: context_gathering
+    name: "Context Gathering"
+    iteration: 0
+
+    description: |
+      Explore existing codebase and gather all relevant context before planning.
+      This phase does NOT produce output - only extracts patterns and constraints.
+
+    actions:
+      - action: explore_codebase
+        tool: Task
+        params:
+          subagent_type: Explore
+          prompt: |
+            Thoroughly explore the codebase to understand:
+            1. Existing architecture and patterns
+            2. Related skills, agents, or workflows
+            3. Integration points with {inputs.ecosystem}
+            4. Any prior work on {inputs.domain}
+
+      - action: analyze_ecosystem
+        tool: WebSearch
+        params:
+          query: "{inputs.domain} best practices {current_year}"
+
+      - action: extract_patterns
+        skill: extract-context
+        params:
+          focus: [architecture, patterns, constraints]
+
+    outputs:
+      - context_patterns: array
+      - existing_integrations: array
+      - ecosystem_insights: object
+
+    quality_gate:
+      min_score: 0.40
+      criteria:
+        - "Codebase structure understood"
+        - "Ecosystem mapped"
+        - "No blocking unknowns"
+
+  # --------------------------------------------------------------------------
+  # PHASE 1: INTENT ANALYSIS
+  # --------------------------------------------------------------------------
+  - id: intent_analysis
+    name: "Intent Analysis"
+    iteration: 1
+
+    description: |
+      Parse the high-level vision into atomic requirements.
+      Assess complexity and select appropriate strategy.
+
+    meta_prompt: |
+      <intent_analysis>
+        <task>
+          Analyze the vision: "{inputs.vision}"
+          Domain: {inputs.domain}
+          Ecosystem: {inputs.ecosystem}
+        </task>
+
+        <actions>
+          <action priority="1">
+            Extract PRIMARY GOAL: What outcome does the user want?
+            Strip implementation details. Focus on the "why".
+          </action>
+
+          <action priority="2">
+            Identify COMPONENT PRIMITIVES:
+            - What are the atomic building blocks?
+            - What patterns from {inputs.ecosystem} apply?
+            - What new primitives are needed?
+          </action>
+
+          <action priority="3">
+            Assess COMPLEXITY (0.0 - 1.0):
+            - Word count / scope breadth
+            - Ambiguity in requirements
+            - Dependency complexity
+            - Domain specificity
+          </action>
+
+          <action priority="4">
+            Select STRATEGY:
+            - < 0.3: direct_execution
+            - 0.3-0.7: multi_approach_synthesis
+            - > 0.7: autonomous_evolution
+          </action>
+        </actions>
+
+        <output_format>
+          primary_goal: string
+          complexity_score: float
+          complexity_factors:
+            scope: float
+            ambiguity: float
+            dependencies: float
+            domain_specificity: float
+          strategy: enum[direct, multi_approach, autonomous]
+          component_primitives: array
+          success_criteria: array
+        </output_format>
+      </intent_analysis>
+
+    outputs:
+      - intent_spec: object
+      - complexity_assessment: object
+      - strategy_selection: string
+
+    quality_gate:
+      min_score: 0.55
+      criteria:
+        - "Primary goal clearly articulated"
+        - "Complexity score justified"
+        - "Strategy matches complexity"
+
+  # --------------------------------------------------------------------------
+  # PHASE 2: PHILOSOPHY SYNTHESIS
+  # --------------------------------------------------------------------------
+  - id: philosophy_synthesis
+    name: "Philosophy Synthesis"
+    iteration: 2
+
+    description: |
+      Generate first-principles directives based on selected philosophy.
+      Create contrarian insights that differentiate from competition.
+
+    meta_prompt: |
+      <philosophy_synthesis>
+        <context>
+          Domain: {inputs.domain}
+          Vision: {inputs.vision}
+          Philosophy: {inputs.philosophy}
+          Primary Goal: {phase.intent_analysis.primary_goal}
+        </context>
+
+        <frameworks>
+          <framework name="musk_mandate" if="philosophy in [musk, musk_thiel]">
+            DIRECTIVE 1: Question Every Assumption
+            - "The best part is no part. The best process is no process."
+            - List current requirements that can be ELIMINATED
+            - Each elimination must 10x improve something
+
+            DIRECTIVE 2: Vertical Integration
+            - Own the entire stack from {start} to {end}
+            - Map: [User Intent] → [...intermediate steps...] → [Final Output]
+            - Identify bottlenecks that vertical integration solves
+
+            DIRECTIVE 3: Manufacturing at Scale
+            - "The factory IS the product"
+            - How does the system improve itself through usage?
+            - What network effects compound adoption?
+          </framework>
+
+          <framework name="thiel_thesis" if="philosophy in [thiel, musk_thiel]">
+            SECRET 1: Contrarian Truth
+            - "What important truth do very few people agree with you on?"
+            - State the contrarian insight for {inputs.domain}
+            - Provide evidence supporting this secret
+
+            SECRET 2: Platform Shift
+            - What technological/social shift makes this possible NOW?
+            - Why couldn't this exist 5 years ago?
+            - Why will it be obvious in 5 years?
+
+            SECRET 3: Monopoly Path
+            - Start: Dominate a small market completely
+            - Expand: Adjacent markets with leverage
+            - Dominate: Winner-take-all dynamics
+          </framework>
+        </frameworks>
+
+        <output_format>
+          directives:
+            - id: string
+              name: string
+              principle: string
+              eliminations: array (if applicable)
+              integrations: array (if applicable)
+              scale_mechanics: array (if applicable)
+
+          secrets:
+            - id: string
+              contrarian_truth: string
+              evidence: array
+              competitive_moat: string
+
+          philosophy_summary: string (2-3 sentences)
+        </output_format>
+      </philosophy_synthesis>
+
+    outputs:
+      - directives: array
+      - secrets: array
+      - philosophy_summary: string
+
+    quality_gate:
+      min_score: 0.65
+      criteria:
+        - "Directives are actionable, not platitudes"
+        - "Secrets are genuinely contrarian"
+        - "Evidence supports claims"
+
+  # --------------------------------------------------------------------------
+  # PHASE 3: DESIGN SYSTEM
+  # --------------------------------------------------------------------------
+  - id: design_system
+    name: "Design System Architecture"
+    iteration: 3
+
+    description: |
+      Create comprehensive color system and component theming rules.
+      Map to terminal capabilities (256-color, TrueColor, monochrome).
+
+    meta_prompt: |
+      <design_system>
+        <context>
+          Primary Color: {config.theme.primary}
+          Secondary Color: {config.theme.secondary}
+          Domain: {inputs.domain}
+        </context>
+
+        <color_architecture>
+          <section name="brand_identity">
+            Define semantic meaning for primary and secondary colors:
+            - Primary: What emotions/actions does it represent?
+            - Secondary: What emotions/states does it represent?
+            - Contrast ratio must pass WCAG AA (4.5:1 for text)
+          </section>
+
+          <section name="semantic_palette">
+            Derive full palette from primary/secondary:
+            - Surface hierarchy: background → surface → elevated → overlay
+            - Text hierarchy: primary → secondary → tertiary → muted
+            - Interactive states: focus → hover → active → disabled
+            - Feedback colors: success → warning → error → info
+          </section>
+
+          <section name="terminal_mapping">
+            Map colors to terminal capabilities:
+            - 256-color mode: closest ANSI color codes
+            - TrueColor (24-bit): exact RGB escape sequences
+            - Monochrome fallback: bold/dim/underline
+          </section>
+        </color_architecture>
+
+        <theming_rules>
+          <rule name="action_container">
+            Primary color for: actions, focus, selection, progress
+            Secondary color for: containers, borders, backgrounds
+          </rule>
+
+          <rule name="luminance_hierarchy">
+            Map importance levels to color intensity:
+            Critical → Primary → Secondary → Tertiary
+          </rule>
+
+          <rule name="animation_transitions">
+            Define animation patterns using color:
+            - Loading states
+            - Focus transitions
+            - Success/error feedback
+          </rule>
+        </theming_rules>
+
+        <output_format>
+          color_system:
+            primary: {hex, rgb, ansi_256, meaning}
+            secondary: {hex, rgb, ansi_256, meaning}
+            palette: object (full semantic palette)
+            terminal_mapping: object
+
+          theming_rules:
+            - rule_name: string
+              description: string
+              examples: array
+
+          implementation:
+            go_lipgloss: string (code snippet)
+            css_variables: string (code snippet)
+            ansi_sequences: object
+        </output_format>
+      </design_system>
+
+    outputs:
+      - color_system: object
+      - theming_rules: array
+      - implementation_snippets: object
+
+    quality_gate:
+      min_score: 0.72
+      criteria:
+        - "Colors have semantic meaning"
+        - "WCAG contrast requirements met"
+        - "Terminal fallbacks defined"
+
+  # --------------------------------------------------------------------------
+  # PHASE 4: TECHNICAL ARCHITECTURE
+  # --------------------------------------------------------------------------
+  - id: technical_architecture
+    name: "Technical Architecture"
+    iteration: 4
+
+    description: |
+      Design the system architecture with clear layers and integration points.
+      Define core components and their responsibilities.
+
+    meta_prompt: |
+      <technical_architecture>
+        <context>
+          Domain: {inputs.domain}
+          Ecosystem: {inputs.ecosystem}
+          Directives: {phase.philosophy_synthesis.directives}
+          Design System: {phase.design_system.color_system}
+        </context>
+
+        <architecture_layers>
+          <layer name="intent_capture" level="1">
+            How does user intent enter the system?
+            - Input formats: natural language, config, code
+            - Processing: parsing, validation, normalization
+            - Output: structured intent specification
+          </layer>
+
+          <layer name="component_synthesis" level="2">
+            How are components selected and composed?
+            - Registry: available components from {inputs.ecosystem}
+            - Selection: intent → component mapping
+            - Composition: multi-component assembly
+          </layer>
+
+          <layer name="rendering" level="3">
+            How is output produced?
+            - Theme application: design system integration
+            - Adaptation: terminal capability detection
+            - Output: final rendered result
+          </layer>
+        </architecture_layers>
+
+        <core_components>
+          For each component, define:
+          - Purpose: single-sentence description
+          - Inputs: what it receives
+          - Outputs: what it produces
+          - Dependencies: what it requires
+          - Files: where implementation lives
+        </core_components>
+
+        <integration_points>
+          Map integration with {inputs.ecosystem}:
+          - Which existing tools are used?
+          - How are they invoked?
+          - What data flows between them?
+        </integration_points>
+
+        <output_format>
+          architecture_diagram: string (ASCII art)
+          layers:
+            - name: string
+              purpose: string
+              input: string
+              output: string
+              components: array
+
+          core_components:
+            - name: string
+              purpose: string
+              inputs: array
+              outputs: array
+              dependencies: array
+              files: array
+
+          integration_map: object
+        </output_format>
+      </technical_architecture>
+
+    outputs:
+      - architecture_diagram: string
+      - layers: array
+      - core_components: array
+      - integration_map: object
+
+    quality_gate:
+      min_score: 0.78
+      criteria:
+        - "All layers clearly defined"
+        - "No orphan components"
+        - "Integration points explicit"
+
+  # --------------------------------------------------------------------------
+  # PHASE 5: EXECUTION ROADMAP
+  # --------------------------------------------------------------------------
+  - id: execution_roadmap
+    name: "Execution Roadmap"
+    iteration: 5
+
+    description: |
+      Create phased execution plan with deliverables and success metrics.
+      NO time estimates - focus on dependencies and sequence.
+
+    meta_prompt: |
+      <execution_roadmap>
+        <context>
+          Architecture: {phase.technical_architecture}
+          Philosophy: {phase.philosophy_synthesis.directives}
+          Timeline Style: {inputs.timeline_style}
+        </context>
+
+        <phase_template>
+          For each phase:
+
+          GOAL: Single sentence describing the phase objective
+
+          DELIVERABLES:
+          □ Concrete, verifiable outputs
+          □ Each deliverable has clear done criteria
+
+          SUCCESS METRICS:
+          • Quantifiable measurements
+          • Leading indicators preferred
+
+          KEY RISK: Most likely failure mode
+          MITIGATION: How to prevent or respond
+
+          DEPENDENCIES: What must complete first
+        </phase_template>
+
+        <lean_startup_cycles>
+          For each phase, define Build-Measure-Learn:
+          - BUILD: What to create
+          - MEASURE: What to track
+          - LEARN: What question to answer
+        </lean_startup_cycles>
+
+        <output_format>
+          phases:
+            - id: string
+              name: string
+              goal: string
+              deliverables: array
+              success_metrics: array
+              key_risk: string
+              mitigation: string
+              dependencies: array
+              bml_cycle:
+                build: string
+                measure: string
+                learn: string
+
+          critical_path: array (ordered phase IDs)
+
+          kpis:
+            - name: string
+              target: string
+              measurement: string
+        </output_format>
+      </execution_roadmap>
+
+    outputs:
+      - phases: array
+      - critical_path: array
+      - kpis: array
+
+    quality_gate:
+      min_score: 0.82
+      criteria:
+        - "Phases have clear dependencies"
+        - "Deliverables are verifiable"
+        - "Metrics are measurable"
+
+  # --------------------------------------------------------------------------
+  # PHASE 6: META-PROMPT GENERATION
+  # --------------------------------------------------------------------------
+  - id: meta_prompt_generation
+    name: "Meta-Prompt Generation"
+    iteration: 6
+
+    description: |
+      Generate the iterative meta-prompt that will be used to execute the plan.
+      This is the self-referential core of the system.
+
+    meta_prompt: |
+      <meta_prompt_generation>
+        <context>
+          All previous phases: {phases.*}
+          Quality threshold: {config.quality_threshold}
+          Max iterations: {config.max_iterations}
+        </context>
+
+        <meta_prompt_structure>
+          <identity>
+            Define the system's self-conception:
+            - Name and purpose
+            - Core capabilities
+            - Aesthetic identity (colors, style)
+          </identity>
+
+          <principles>
+            Extract principles from philosophy phase:
+            - first_principles: How to question assumptions
+            - contrarian_check: How to find 10x improvements
+            - vertical_integration: How to own the stack
+          </principles>
+
+          <iteration_protocol>
+            Define the iteration loop:
+            - Phase 1 (analyze): Parse intent, assess complexity
+            - Phase 2 (synthesize): Generate architecture
+            - Phase 3+ (refine): Address weaknesses
+            - Stop condition: quality >= threshold OR max iterations
+          </iteration_protocol>
+
+          <quality_dimensions>
+            Define how to assess output quality:
+            - Dimension name, weight, criteria
+            - Decision matrix: ACCEPT / ITERATE / RESTRUCTURE / RESTART
+          </quality_dimensions>
+
+          <context_extraction>
+            Define what to extract after each iteration:
+            - Patterns: What worked
+            - Constraints: What limits apply
+            - Learnings: What to do differently
+          </context_extraction>
+        </meta_prompt_structure>
+
+        <output_format>
+          meta_prompt_xml: string (complete XML schema)
+
+          skill_definition:
+            name: string
+            invocation: string
+            phases: array
+            quality_rubric: object
+            examples: array
+        </output_format>
+      </meta_prompt_generation>
+
+    outputs:
+      - meta_prompt_xml: string
+      - skill_definition: object
+
+    quality_gate:
+      min_score: 0.85
+      criteria:
+        - "Meta-prompt is self-consistent"
+        - "All phases represented"
+        - "Quality dimensions weighted to 1.0"
+
+  # --------------------------------------------------------------------------
+  # PHASE 7: EXAMPLES & VALIDATION
+  # --------------------------------------------------------------------------
+  - id: examples_validation
+    name: "Examples & Validation"
+    iteration: 7
+
+    description: |
+      Generate concrete examples demonstrating the plan in action.
+      Validate quality across all dimensions.
+
+    meta_prompt: |
+      <examples_validation>
+        <context>
+          Full plan: {phases.*}
+          Design system: {phase.design_system}
+          Meta-prompt: {phase.meta_prompt_generation}
+        </context>
+
+        <example_generation>
+          Generate 2-3 examples showing:
+          1. Simple case (complexity < 0.3)
+          2. Medium case (complexity 0.3-0.7)
+          3. Complex case (complexity > 0.7)
+
+          For each example:
+          - Input: What the user requests
+          - Iteration trace: Quality scores per iteration
+          - Output: Generated result (ASCII mockup if visual)
+        </example_generation>
+
+        <risk_analysis>
+          For each identified risk:
+          - Description
+          - Probability: High / Medium / Low
+          - Impact: Critical / High / Medium / Low
+          - Mitigation strategies
+        </risk_analysis>
+
+        <resource_requirements>
+          - Team: Minimum viable roles
+          - Infrastructure: Required services/tools
+          - Budget: Monthly cost estimate
+        </resource_requirements>
+
+        <output_format>
+          examples:
+            - name: string
+              complexity: float
+              input: string
+              iteration_trace: array
+              output: string (or ASCII mockup)
+
+          risks:
+            - description: string
+              probability: enum
+              impact: enum
+              mitigations: array
+
+          resources:
+            team: array
+            infrastructure: array
+            budget_monthly: number
+        </output_format>
+      </examples_validation>
+
+    outputs:
+      - examples: array
+      - risks: array
+      - resources: object
+
+    quality_gate:
+      min_score: 0.88
+      criteria:
+        - "Examples cover complexity spectrum"
+        - "Risks have mitigations"
+        - "Resources are realistic"
+
+# ============================================================================
+# QUALITY ASSESSMENT
+# ============================================================================
+
+quality:
+  dimensions:
+    - name: completeness
+      weight: 0.25
+      criteria:
+        - "All required sections present"
+        - "No placeholder content"
+        - "Examples are concrete"
+
+    - name: coherence
+      weight: 0.25
+      criteria:
+        - "Philosophy aligns with architecture"
+        - "Design system supports use cases"
+        - "Roadmap follows dependencies"
+
+    - name: actionability
+      weight: 0.25
+      criteria:
+        - "Deliverables are verifiable"
+        - "Metrics are measurable"
+        - "Risks have mitigations"
+
+    - name: differentiation
+      weight: 0.25
+      criteria:
+        - "Contrarian insights are genuine"
+        - "Competitive moat is defensible"
+        - "10x improvement is articulated"
+
+  decision_matrix:
+    accept: ">= 0.85"
+    iterate: "0.70 - 0.84"
+    restructure: "0.50 - 0.69"
+    restart: "< 0.50"
+
+# ============================================================================
+# CONTEXT EXTRACTION
+# ============================================================================
+
+context_extraction:
+  patterns:
+    - type: philosophy
+      extract: "Which directives resonated most?"
+    - type: architecture
+      extract: "Which layer patterns emerged?"
+    - type: design
+      extract: "Which color applications worked?"
+
+  constraints:
+    - type: technical
+      extract: "What limitations were encountered?"
+    - type: resource
+      extract: "What resource bounds exist?"
+    - type: ecosystem
+      extract: "What integration challenges arose?"
+
+  learnings:
+    - type: process
+      extract: "What would improve the workflow?"
+    - type: output
+      extract: "What output format works best?"
+    - type: quality
+      extract: "Which quality criteria matter most?"
+
+# ============================================================================
+# CATEGORICAL FRAMEWORK (OPTIONAL)
+# ============================================================================
+
+categorical:
+  enabled: true
+
+  monadic_composition:
+    description: |
+      Each phase is a monadic computation that threads context through iterations.
+      flatMap chains phases, accumulating quality improvements.
+
+    type: "MetaPromptMonad"
+    operations:
+      - "return/of: Lift initial input into workflow context"
+      - "flatMap/chain: Compose phases sequentially"
+      - "iterate: Run until quality threshold"
+
+  comonadic_extraction:
+    description: |
+      Context extraction uses comonadic patterns to access surrounding iteration history.
+      extend applies context-aware transformations.
+
+    type: "ContextComonad"
+    operations:
+      - "extract: Get current best output"
+      - "extend: Transform with full context awareness"
+      - "duplicate: Nest comonad for meta-analysis"
+
+  kan_extensions:
+    left_kan:
+      description: "Generative - find best output from multiple strategies"
+      formula: "Lan_G(F)(e) = ∫^c Hom(G(c), e) × F(c)"
+      application: "Multi-strategy synthesis in complex phases"
+
+    right_kan:
+      description: "Extractive - find conservative pattern intersection"
+      formula: "Ran_G(F)(e) = ∫_c [Hom(e, G(c)), F(c)]"
+      application: "Context extraction across iterations"
+
+# ============================================================================
+# WORKFLOW INVOCATION
+# ============================================================================
+
+invocation:
+  cli: |
+    claude "/startup-execution-plan" \
+      --domain "TUI framework" \
+      --vision "Build the terminal interface that makes all others obsolete" \
+      --ecosystem '["Bubble Tea", "Lip Gloss", "Bubbles"]' \
+      --theme-primary "#D4AF37" \
+      --theme-secondary "#1B365D"
+
+  programmatic: |
+    from workflows import StartupExecutionPlan
+
+    workflow = StartupExecutionPlan(
+        domain="TUI framework",
+        vision="Build the terminal interface that makes all others obsolete",
+        ecosystem=["Bubble Tea", "Lip Gloss", "Bubbles"],
+        theme={"primary": "#D4AF37", "secondary": "#1B365D"}
+    )
+
+    result = workflow.run(max_iterations=5, quality_threshold=0.85)
+
+  skill: |
+    /startup-execution-plan "TUI framework" \
+      --vision "Build the terminal interface that makes all others obsolete"
+
+# ============================================================================
+# CHANGELOG
+# ============================================================================
+
+changelog:
+  - version: "2.0.0"
+    date: "2025-11-22"
+    changes:
+      - "Restructured as reusable workflow specification"
+      - "Added categorical framework integration"
+      - "Parameterized philosophy and theme"
+      - "Added quality gates per phase"
+
+  - version: "1.0.0"
+    date: "2025-11-22"
+    changes:
+      - "Initial execution plan for NextGen TUI"
+      - "Musk/Thiel directives"
+      - "Gold/Navy color system"

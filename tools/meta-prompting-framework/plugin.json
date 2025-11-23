@@ -1,0 +1,109 @@
+{
+  "name": "meta-prompting-framework",
+  "version": "1.0.0",
+  "description": "Recursive prompt improvement with quality-driven iteration for Claude Code CLI",
+  "author": "manutej",
+  "repository": "https://github.com/manutej/meta-prompting-framework",
+  "license": "MIT",
+  "skills": [
+    {
+      "name": "analyze-complexity",
+      "description": "Determine optimal meta-prompting strategy by analyzing task complexity (0.0-1.0)",
+      "category": "analysis",
+      "path": "skills/analyze-complexity/SKILL.md",
+      "keywords": ["complexity", "routing", "strategy", "planning"]
+    },
+    {
+      "name": "extract-context",
+      "description": "Extract patterns, constraints, and success indicators from LLM outputs",
+      "category": "analysis",
+      "path": "skills/extract-context/SKILL.md",
+      "keywords": ["context", "extraction", "patterns", "learning"]
+    },
+    {
+      "name": "meta-prompt-iterate",
+      "description": "Full recursive meta-prompting workflow with quality-driven iteration",
+      "category": "generation",
+      "path": "skills/meta-prompt-iterate/SKILL.md",
+      "keywords": ["meta-prompting", "iteration", "improvement", "recursive"]
+    },
+    {
+      "name": "assess-quality",
+      "description": "Score output quality (0.0-1.0) against task requirements",
+      "category": "validation",
+      "path": "skills/assess-quality/SKILL.md",
+      "keywords": ["quality", "assessment", "scoring", "validation"]
+    }
+  ],
+  "commands": [
+    {
+      "name": "quick-improve",
+      "description": "One-shot prompt improvement (single iteration)",
+      "path": "commands/quick-improve.md"
+    },
+    {
+      "name": "multi-stage",
+      "description": "Research -> Plan -> Implement workflow",
+      "path": "commands/multi-stage.md"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "production-ready",
+      "description": "Full quality pipeline (3 iterations max, 0.90 threshold)",
+      "path": "workflows/production-ready.yaml"
+    },
+    {
+      "name": "rapid-iteration",
+      "description": "Fast feedback loop (1-2 iterations, 0.85 threshold)",
+      "path": "workflows/rapid-iteration.yaml"
+    }
+  ],
+  "engine": {
+    "path": "meta_prompting_engine/",
+    "entry": "core.py",
+    "components": [
+      "complexity.py",
+      "extraction.py",
+      "llm_clients/base.py",
+      "llm_clients/claude.py"
+    ]
+  },
+  "requirements": {
+    "python": ">=3.8",
+    "dependencies": [
+      "anthropic>=0.18.0",
+      "python-dotenv>=1.0.0"
+    ]
+  },
+  "configuration": {
+    "default_max_iterations": 3,
+    "default_quality_threshold": 0.90,
+    "complexity_thresholds": {
+      "simple": 0.3,
+      "medium": 0.7
+    },
+    "strategies": {
+      "simple": "direct_execution",
+      "medium": "multi_approach_synthesis",
+      "complex": "autonomous_evolution"
+    }
+  },
+  "examples": [
+    {
+      "name": "palindrome-checker",
+      "description": "Real API test with 2 iterations, 4316 tokens",
+      "path": "examples/palindrome-checker/"
+    },
+    {
+      "name": "find-maximum",
+      "description": "Real API test with error handling variants",
+      "path": "examples/find-maximum/"
+    }
+  ],
+  "testing": {
+    "mock_validation": "validate_implementation.py",
+    "real_api_test": "test_real_api.py",
+    "demo": "show_claude_responses.py"
+  }
+}

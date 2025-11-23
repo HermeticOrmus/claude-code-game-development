@@ -1,0 +1,197 @@
+# Docker Compose Configuration for Microservices Architecture
+# Demonstrates the complete 7-level framework
+
+version: '3.8'
+
+services:
+  # Infrastructure Services
+  consul:
+    image: consul:1.16
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+    command: agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
+    networks:
+      - microservices
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - microservices
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - microservices
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - microservices
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: microservices
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - microservices
+
+  # Observability Stack (Level 6)
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    networks:
+      - microservices
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - microservices
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+      - "16686:16686"
+      - "14268:14268"
+      - "14250:14250"
+      - "9411:9411"
+    environment:
+      COLLECTOR_ZIPKIN_HOST_PORT: ":9411"
+    networks:
+      - microservices
+
+  # Service Mesh - Istio Sidecar Proxy (Level 6)
+  envoy:
+    image: envoyproxy/envoy:v1.27-latest
+    ports:
+      - "10000:10000"
+      - "9901:9901"
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml
+    command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml
+    networks:
+      - microservices
+
+  # Microservices
+  order-service:
+    build:
+      context: ../implementations/fastapi
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@postgres:5432/orders
+      - REDIS_URL=redis://redis:6379
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - CONSUL_HOST=consul
+      - JAEGER_AGENT_HOST=jaeger
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+      - consul
+      - jaeger
+    networks:
+      - microservices
+
+  inventory-service:
+    build:
+      context: ../implementations/express
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    environment:
+      - DB_HOST=postgres
+      - REDIS_HOST=redis
+      - KAFKA_BROKER=kafka:9092
+      - CONSUL_HOST=consul
+      - JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+      - consul
+      - jaeger
+    networks:
+      - microservices
+
+  payment-service:
+    build:
+      context: ../implementations/spring-boot
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/payments
+      - SPRING_REDIS_HOST=redis
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - SPRING_CLOUD_CONSUL_HOST=consul
+      - SPRING_ZIPKIN_BASE_URL=http://jaeger:9411
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+      - consul
+      - jaeger
+    networks:
+      - microservices
+
+  # Self-Healing Controller (Level 7)
+  healing-controller:
+    build:
+      context: .
+      dockerfile: Dockerfile.healing
+    environment:
+      - KUBERNETES_SERVICE_HOST=kubernetes
+      - PROMETHEUS_URL=http://prometheus:9090
+      - CONSUL_HOST=consul
+    depends_on:
+      - prometheus
+      - consul
+    networks:
+      - microservices
+
+networks:
+  microservices:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  grafana_data:

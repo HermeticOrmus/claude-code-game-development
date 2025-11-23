@@ -1,0 +1,58 @@
+{
+  "name": "inventory-service",
+  "version": "2.0.0",
+  "description": "Microservices Architecture - Inventory Service",
+  "main": "inventoryService.js",
+  "scripts": {
+    "start": "node inventoryService.js",
+    "dev": "nodemon inventoryService.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "microservices",
+    "express",
+    "kafka",
+    "consul",
+    "service-mesh"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "uuid": "^9.0.1",
+    "consul": "^1.2.0",
+    "kafkajs": "^2.2.4",
+    "ioredis": "^5.3.2",
+    "pg": "^8.11.3",
+    "opossum": "^8.1.3",
+    "prom-client": "^15.0.0",
+    "@opentelemetry/api": "^1.7.0",
+    "@opentelemetry/sdk-trace-node": "^1.18.1",
+    "@opentelemetry/instrumentation-express": "^0.34.1",
+    "@opentelemetry/instrumentation-http": "^0.45.1",
+    "@opentelemetry/exporter-jaeger": "^1.18.1",
+    "@opentelemetry/resources": "^1.18.1",
+    "@opentelemetry/semantic-conventions": "^1.18.1",
+    "@opentelemetry/instrumentation": "^0.45.1",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

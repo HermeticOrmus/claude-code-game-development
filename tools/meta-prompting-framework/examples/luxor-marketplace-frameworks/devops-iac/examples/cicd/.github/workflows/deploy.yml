@@ -1,0 +1,414 @@
+name: Deploy Infrastructure and Application
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: myapp
+  TERRAFORM_VERSION: 1.5.0
+
+jobs:
+  validate:
+    name: Validate Code and Infrastructure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test:ci
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Init
+        run: terraform init -backend=false
+        working-directory: ./terraform
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ./terraform
+
+      - name: Security Scanning with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  build:
+    name: Build and Push Docker Image
+    needs: validate
+    runs-on: ubuntu-latest
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+      image-digest: ${{ steps.build.outputs.digest }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            BUILD_VERSION=${{ github.sha }}
+            BUILD_DATE=${{ github.event.head_commit.timestamp }}
+
+      - name: Run Trivy vulnerability scanner on image
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+          format: 'sarif'
+          output: 'trivy-image-results.sarif'
+
+      - name: Upload image scan results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-image-results.sarif'
+
+  deploy-infrastructure:
+    name: Deploy Infrastructure with Terraform
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    environment:
+      name: ${{ github.event.inputs.environment || 'staging' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      - name: Terraform Init
+        run: |
+          terraform init \
+            -backend-config="key=infrastructure/${{ github.event.inputs.environment || 'staging' }}/terraform.tfstate"
+        working-directory: ./terraform
+
+      - name: Select Terraform Workspace
+        run: terraform workspace select ${{ github.event.inputs.environment || 'staging' }} || terraform workspace new ${{ github.event.inputs.environment || 'staging' }}
+        working-directory: ./terraform
+
+      - name: Terraform Plan
+        id: plan
+        run: |
+          terraform plan \
+            -var="environment=${{ github.event.inputs.environment || 'staging' }}" \
+            -var="image_tag=${{ github.sha }}" \
+            -out=tfplan
+        working-directory: ./terraform
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply tfplan
+        working-directory: ./terraform
+
+      - name: Export Terraform Outputs
+        id: terraform-outputs
+        run: |
+          echo "cluster_endpoint=$(terraform output -raw cluster_endpoint)" >> $GITHUB_OUTPUT
+          echo "alb_dns_name=$(terraform output -raw alb_dns_name)" >> $GITHUB_OUTPUT
+        working-directory: ./terraform
+
+  deploy-application:
+    name: Deploy Application to Kubernetes
+    needs: [build, deploy-infrastructure]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    environment:
+      name: ${{ github.event.inputs.environment || 'staging' }}
+      url: https://${{ steps.deploy.outputs.app-url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig \
+            --region ${{ env.AWS_REGION }} \
+            --name myapp-${{ github.event.inputs.environment || 'staging' }}
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'v3.12.0'
+
+      - name: Deploy with Helm
+        id: deploy
+        run: |
+          helm upgrade --install myapp ./helm/myapp \
+            --namespace ${{ github.event.inputs.environment || 'staging' }} \
+            --create-namespace \
+            --set image.tag=${{ github.sha }} \
+            --set image.repository=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }} \
+            --set environment=${{ github.event.inputs.environment || 'staging' }} \
+            --set ingress.enabled=true \
+            --set ingress.hostname=myapp-${{ github.event.inputs.environment || 'staging' }}.example.com \
+            --wait \
+            --timeout 10m
+
+          echo "app-url=myapp-${{ github.event.inputs.environment || 'staging' }}.example.com" >> $GITHUB_OUTPUT
+
+      - name: Verify Deployment
+        run: |
+          kubectl rollout status deployment/myapp \
+            -n ${{ github.event.inputs.environment || 'staging' }} \
+            --timeout=5m
+
+      - name: Run Smoke Tests
+        run: |
+          # Wait for application to be ready
+          sleep 30
+
+          # Health check
+          curl -f https://${{ steps.deploy.outputs.app-url }}/health || exit 1
+
+          # Basic functionality test
+          npm run test:smoke -- --url=https://${{ steps.deploy.outputs.app-url }}
+
+  integration-tests:
+    name: Run Integration Tests
+    needs: deploy-application
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Integration Tests
+        run: |
+          npm run test:integration -- \
+            --url=https://myapp-${{ github.event.inputs.environment || 'staging' }}.example.com
+        env:
+          TEST_API_KEY: ${{ secrets.TEST_API_KEY }}
+
+      - name: Run E2E Tests with Playwright
+        run: |
+          npx playwright install
+          npm run test:e2e -- \
+            --base-url=https://myapp-${{ github.event.inputs.environment || 'staging' }}.example.com
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: |
+            test-results/
+            playwright-report/
+
+  performance-tests:
+    name: Run Performance Tests
+    needs: deploy-application
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run k6 Performance Tests
+        uses: grafana/k6-action@v0.3.0
+        with:
+          filename: tests/performance/load-test.js
+          flags: |
+            --out cloud \
+            --duration 5m \
+            --vus 100
+        env:
+          K6_CLOUD_TOKEN: ${{ secrets.K6_CLOUD_TOKEN }}
+          BASE_URL: https://myapp-${{ github.event.inputs.environment || 'staging' }}.example.com
+
+      - name: Analyze Performance Results
+        run: |
+          # Download and analyze results
+          npm run analyze:performance
+
+  promote-to-production:
+    name: Promote to Production
+    needs: [integration-tests, performance-tests]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event.inputs.environment == 'staging'
+    environment:
+      name: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create Production PR
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: promote ${{ github.sha }} to production'
+          title: '[Auto] Promote to Production - ${{ github.sha }}'
+          body: |
+            ## Production Deployment
+
+            **Image**: `${{ github.sha }}`
+            **Staging Tests**: ✅ Passed
+            **Performance Tests**: ✅ Passed
+
+            ### Deployment Checklist
+            - [ ] Review staging metrics
+            - [ ] Verify rollback plan
+            - [ ] Notify stakeholders
+            - [ ] Schedule deployment window
+
+            ### Changes
+            ${{ github.event.head_commit.message }}
+
+            ---
+            Auto-generated by GitHub Actions
+          branch: promote/production-${{ github.sha }}
+          base: main
+          labels: |
+            deployment
+            production
+            automated
+
+  rollback:
+    name: Rollback Deployment
+    runs-on: ubuntu-latest
+    if: failure()
+    needs: [deploy-application]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig \
+            --region ${{ env.AWS_REGION }} \
+            --name myapp-${{ github.event.inputs.environment || 'staging' }}
+
+      - name: Rollback Kubernetes Deployment
+        run: |
+          kubectl rollout undo deployment/myapp \
+            -n ${{ github.event.inputs.environment || 'staging' }}
+
+          kubectl rollout status deployment/myapp \
+            -n ${{ github.event.inputs.environment || 'staging' }} \
+            --timeout=5m
+
+      - name: Notify Rollback
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          custom_payload: |
+            {
+              text: "⚠️ Deployment Rollback",
+              attachments: [{
+                color: 'warning',
+                text: `Rolled back deployment in ${{ github.event.inputs.environment || 'staging' }} environment\nCommit: ${{ github.sha }}`
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

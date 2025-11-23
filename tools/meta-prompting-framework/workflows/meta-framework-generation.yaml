@@ -1,0 +1,249 @@
+---
+name: Meta-Framework Generation
+description: |
+  Complete workflow for generating a custom meta-prompting framework for any domain.
+  Orchestrates research, synthesis, framework generation, validation, and documentation.
+
+agents:
+  - meta2
+  - MARS
+  - mercurio-orchestrator
+  - deep-researcher
+
+steps:
+  - name: domain_analysis
+    agent: deep-researcher
+    description: Research and analyze target domain
+    inputs:
+      - domain_name
+      - depth_required
+    outputs:
+      - domain_primitives
+      - complexity_drivers
+      - existing_frameworks
+    prompt: |
+      Research the domain "${domain_name}" comprehensively:
+
+      1. Identify fundamental primitives (atomic objects)
+      2. Discover key operations and composition patterns
+      3. Determine complexity drivers
+      4. Find existing frameworks and approaches
+      5. Map to categorical structures
+
+      Depth level: ${depth_required}
+
+      Output structured analysis ready for framework generation.
+
+  - name: categorical_mapping
+    agent: meta2
+    description: Map domain to categorical structures
+    depends_on: [domain_analysis]
+    inputs:
+      - domain_primitives
+      - complexity_drivers
+    outputs:
+      - category_definition
+      - morphism_identification
+      - complexity_hierarchy
+    prompt: |
+      Given domain analysis, perform categorical mapping:
+
+      DOMAIN PRIMITIVES:
+      ${domain_primitives}
+
+      COMPLEXITY DRIVERS:
+      ${complexity_drivers}
+
+      Identify:
+      1. Category objects
+      2. Morphisms (operations)
+      3. Composition rules
+      4. Identity morphisms
+      5. Complexity hierarchy
+
+      Prepare for N-level framework architecture.
+
+  - name: framework_generation
+    agent: meta2
+    description: Generate complete N-level meta-prompting framework
+    depends_on: [categorical_mapping]
+    inputs:
+      - domain_name
+      - depth_levels
+      - categorical_framework
+      - theoretical_depth
+      - category_definition
+    outputs:
+      - complete_framework
+      - level_specifications
+      - meta_prompts
+      - examples
+    prompt: |
+      Generate complete meta-prompting framework:
+
+      PARAMETERS:
+      - DOMAIN: ${domain_name}
+      - DEPTH_LEVELS: ${depth_levels}
+      - CATEGORICAL_FRAMEWORK: ${categorical_framework}
+      - THEORETICAL_DEPTH: ${theoretical_depth}
+
+      CATEGORY DEFINITION:
+      ${category_definition}
+
+      Execute 7-phase generation process:
+      1. Domain Analysis (done)
+      2. Level Architecture Design
+      3. Categorical Framework Application
+      4. Level-Specific Generation
+      5. Cross-Level Integration
+      6. Theoretical Justification
+      7. Output Formatting
+
+      Produce complete framework with meta-prompts for all ${depth_levels} levels.
+
+  - name: validation
+    agent: MARS
+    description: Validate framework across multiple examples
+    depends_on: [framework_generation]
+    inputs:
+      - complete_framework
+      - domain_name
+    outputs:
+      - validation_results
+      - identified_gaps
+      - refinement_suggestions
+    prompt: |
+      Validate the generated meta-prompting framework:
+
+      FRAMEWORK:
+      ${complete_framework}
+
+      DOMAIN: ${domain_name}
+
+      Execute validation:
+      1. Test framework on 5-7 concrete examples
+      2. Verify level progression makes sense
+      3. Check categorical coherence
+      4. Identify gaps or inconsistencies
+      5. Suggest refinements
+
+      Provide comprehensive validation report.
+
+  - name: synthesis_and_documentation
+    agent: mercurio-orchestrator
+    description: Synthesize findings and create comprehensive documentation
+    depends_on: [validation]
+    inputs:
+      - complete_framework
+      - validation_results
+      - refinement_suggestions
+    outputs:
+      - final_framework
+      - documentation
+      - usage_guide
+    prompt: |
+      Synthesize validated framework into final deliverable:
+
+      FRAMEWORK:
+      ${complete_framework}
+
+      VALIDATION:
+      ${validation_results}
+
+      REFINEMENTS:
+      ${refinement_suggestions}
+
+      Create:
+      1. Refined framework incorporating feedback
+      2. Comprehensive documentation
+      3. Usage guide with examples
+      4. Integration patterns
+      5. Troubleshooting guide
+
+      Ensure ethical, practical, and theoretically sound output.
+
+parameters:
+  domain_name:
+    type: string
+    required: true
+    description: Target domain for framework generation
+    examples:
+      - "database query optimization"
+      - "UI/UX design patterns"
+      - "machine learning pipelines"
+
+  depth_levels:
+    type: integer
+    required: true
+    default: 5
+    min: 3
+    max: 10
+    description: Number of sophistication levels
+
+  categorical_framework:
+    type: string
+    required: false
+    default: "natural_equivalence"
+    options:
+      - "natural_equivalence"
+      - "functors"
+      - "rewrite"
+      - "inclusion"
+      - "internal_hom"
+      - "comprehensive"
+    description: Categorical structure to emphasize
+
+  theoretical_depth:
+    type: string
+    required: false
+    default: "moderate"
+    options:
+      - "minimal"
+      - "moderate"
+      - "comprehensive"
+      - "research_level"
+    description: Amount of category theory to expose
+
+  depth_required:
+    type: string
+    required: false
+    default: "moderate"
+    options:
+      - "quick_survey"
+      - "moderate"
+      - "comprehensive"
+    description: Research depth for domain analysis
+
+output:
+  format: markdown
+  structure:
+    - executive_summary
+    - categorical_foundations
+    - level_architecture
+    - level_specifications
+    - cross_level_integration
+    - theoretical_justification
+    - usage_guide
+    - examples
+    - appendices
+  save_to: "generated-frameworks/${domain_name}-framework.md"
+
+example_usage: |
+  # Generate 5-level framework for API design
+  workflow: meta-framework-generation
+  parameters:
+    domain_name: "RESTful API design"
+    depth_levels: 5
+    categorical_framework: "inclusion"
+    theoretical_depth: "moderate"
+    depth_required: "moderate"
+
+estimated_time: "15-30 minutes"
+token_budget: "50000-100000 tokens"
+
+tags:
+  - meta-prompting
+  - framework-generation
+  - category-theory
+  - multi-agent
+---

@@ -1,0 +1,416 @@
+# Prometheus configuration for comprehensive monitoring
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'production'
+    environment: 'prod'
+    region: 'us-east-1'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093
+
+# Load rules once and periodically evaluate them
+rule_files:
+  - '/etc/prometheus/alerts/*.yml'
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    metrics_path: '/metrics'
+
+  # Kubernetes API server
+  - job_name: 'kubernetes-apiservers'
+    kubernetes_sd_configs:
+      - role: endpoints
+    scheme: https
+    tls_config:
+      ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    authorization:
+      credentials_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: default;kubernetes;https
+
+  # Kubernetes nodes
+  - job_name: 'kubernetes-nodes'
+    kubernetes_sd_configs:
+      - role: node
+    scheme: https
+    tls_config:
+      ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    authorization:
+      credentials_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+      - target_label: __address__
+        replacement: kubernetes.default.svc:443
+      - source_labels: [__meta_kubernetes_node_name]
+        regex: (.+)
+        target_label: __metrics_path__
+        replacement: /api/v1/nodes/${1}/proxy/metrics
+
+  # Kubernetes pods
+  - job_name: 'kubernetes-pods'
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      # Only scrape pods with prometheus.io/scrape annotation
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      # Get metrics path from annotation
+      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      # Get port from annotation
+      - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+        action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        target_label: __address__
+      # Add pod labels
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
+      # Add pod namespace
+      - source_labels: [__meta_kubernetes_namespace]
+        action: replace
+        target_label: kubernetes_namespace
+      # Add pod name
+      - source_labels: [__meta_kubernetes_pod_name]
+        action: replace
+        target_label: kubernetes_pod_name
+
+  # Kubernetes services
+  - job_name: 'kubernetes-services'
+    kubernetes_sd_configs:
+      - role: service
+    metrics_path: /metrics
+    relabel_configs:
+      # Only scrape services with prometheus.io/scrape annotation
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
+        action: keep
+        regex: true
+      # Get scheme from annotation
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scheme]
+        action: replace
+        target_label: __scheme__
+        regex: (https?)
+      # Get metrics path from annotation
+      - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_path]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+      # Get port from annotation
+      - source_labels: [__address__, __meta_kubernetes_service_annotation_prometheus_io_port]
+        action: replace
+        target_label: __address__
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+      # Add service labels
+      - action: labelmap
+        regex: __meta_kubernetes_service_label_(.+)
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: kubernetes_namespace
+      - source_labels: [__meta_kubernetes_service_name]
+        target_label: kubernetes_name
+
+  # Node Exporter
+  - job_name: 'node-exporter'
+    kubernetes_sd_configs:
+      - role: endpoints
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_endpoints_name]
+        regex: 'node-exporter'
+        action: keep
+
+  # cAdvisor for container metrics
+  - job_name: 'cadvisor'
+    kubernetes_sd_configs:
+      - role: node
+    scheme: https
+    tls_config:
+      ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    authorization:
+      credentials_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+      - target_label: __address__
+        replacement: kubernetes.default.svc:443
+      - source_labels: [__meta_kubernetes_node_name]
+        regex: (.+)
+        target_label: __metrics_path__
+        replacement: /api/v1/nodes/${1}/proxy/metrics/cadvisor
+
+  # Application-specific metrics
+  - job_name: 'application'
+    kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names: ['production', 'staging']
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_pod_label_app]
+        regex: myapp
+        action: keep
+      - source_labels: [__meta_kubernetes_pod_container_port_name]
+        regex: metrics
+        action: keep
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod
+      - source_labels: [__meta_kubernetes_pod_label_version]
+        target_label: version
+
+  # AWS CloudWatch Exporter
+  - job_name: 'cloudwatch'
+    static_configs:
+      - targets: ['cloudwatch-exporter:9106']
+    metrics_path: '/metrics'
+
+  # Blackbox Exporter for endpoint monitoring
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+          - https://api.example.com/health
+          - https://app.example.com
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+
+  # Istio Service Mesh metrics
+  - job_name: 'istio-mesh'
+    kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+            - istio-system
+            - production
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: istio-telemetry;prometheus
+
+  # Database metrics via postgres_exporter
+  - job_name: 'postgresql'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+    metrics_path: '/metrics'
+
+  # Redis metrics via redis_exporter
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis-exporter:9121']
+    metrics_path: '/metrics'
+
+---
+# Alert Rules
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-alerts
+  namespace: monitoring
+data:
+  alerts.yml: |
+    groups:
+      - name: infrastructure
+        interval: 30s
+        rules:
+          - alert: HighCPUUsage
+            expr: |
+              (100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)) > 80
+            for: 5m
+            labels:
+              severity: warning
+              team: infrastructure
+            annotations:
+              summary: "High CPU usage on {{ $labels.instance }}"
+              description: "CPU usage is above 80% (current value: {{ $value }}%)"
+
+          - alert: HighMemoryUsage
+            expr: |
+              (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+            for: 5m
+            labels:
+              severity: warning
+              team: infrastructure
+            annotations:
+              summary: "High memory usage on {{ $labels.instance }}"
+              description: "Memory usage is above 85% (current value: {{ $value }}%)"
+
+          - alert: DiskSpaceLow
+            expr: |
+              (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"} * 100) < 15
+            for: 5m
+            labels:
+              severity: critical
+              team: infrastructure
+            annotations:
+              summary: "Low disk space on {{ $labels.instance }}"
+              description: "Disk space is below 15% (current value: {{ $value }}%)"
+
+      - name: kubernetes
+        interval: 30s
+        rules:
+          - alert: PodCrashLooping
+            expr: |
+              rate(kube_pod_container_status_restarts_total[15m]) > 0
+            for: 5m
+            labels:
+              severity: warning
+              team: platform
+            annotations:
+              summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is crash looping"
+              description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} has restarted {{ $value }} times in the last 15 minutes"
+
+          - alert: PodNotReady
+            expr: |
+              kube_pod_status_ready{condition="false"} == 1
+            for: 10m
+            labels:
+              severity: warning
+              team: platform
+            annotations:
+              summary: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is not ready"
+              description: "Pod has been in a non-ready state for more than 10 minutes"
+
+          - alert: DeploymentReplicasMismatch
+            expr: |
+              kube_deployment_spec_replicas != kube_deployment_status_replicas_available
+            for: 10m
+            labels:
+              severity: warning
+              team: platform
+            annotations:
+              summary: "Deployment {{ $labels.namespace }}/{{ $labels.deployment }} has replica mismatch"
+              description: "Deployment has {{ $value }} replicas available, but {{ $labels.spec_replicas }} are desired"
+
+          - alert: NodeNotReady
+            expr: |
+              kube_node_status_condition{condition="Ready",status="true"} == 0
+            for: 5m
+            labels:
+              severity: critical
+              team: infrastructure
+            annotations:
+              summary: "Node {{ $labels.node }} is not ready"
+              description: "Kubernetes node {{ $labels.node }} has been in NotReady state for more than 5 minutes"
+
+      - name: application
+        interval: 30s
+        rules:
+          - alert: HighErrorRate
+            expr: |
+              sum(rate(http_requests_total{status=~"5.."}[5m])) by (service)
+              /
+              sum(rate(http_requests_total[5m])) by (service) > 0.05
+            for: 5m
+            labels:
+              severity: critical
+              team: application
+            annotations:
+              summary: "High error rate for {{ $labels.service }}"
+              description: "Error rate is above 5% (current value: {{ $value | humanizePercentage }})"
+
+          - alert: HighLatency
+            expr: |
+              histogram_quantile(0.95,
+                sum(rate(http_request_duration_seconds_bucket[5m])) by (service, le)
+              ) > 1
+            for: 5m
+            labels:
+              severity: warning
+              team: application
+            annotations:
+              summary: "High latency for {{ $labels.service }}"
+              description: "95th percentile latency is above 1s (current value: {{ $value }}s)"
+
+          - alert: HighRequestRate
+            expr: |
+              sum(rate(http_requests_total[5m])) by (service) > 10000
+            for: 5m
+            labels:
+              severity: info
+              team: application
+            annotations:
+              summary: "High request rate for {{ $labels.service }}"
+              description: "Request rate is above 10k req/s (current value: {{ $value }} req/s)"
+
+      - name: database
+        interval: 30s
+        rules:
+          - alert: DatabaseDown
+            expr: |
+              up{job="postgresql"} == 0
+            for: 1m
+            labels:
+              severity: critical
+              team: database
+            annotations:
+              summary: "PostgreSQL database is down"
+              description: "PostgreSQL instance {{ $labels.instance }} is not responding"
+
+          - alert: DatabaseConnectionsHigh
+            expr: |
+              pg_stat_database_numbackends / pg_settings_max_connections > 0.8
+            for: 5m
+            labels:
+              severity: warning
+              team: database
+            annotations:
+              summary: "Database connection pool is almost exhausted"
+              description: "{{ $value | humanizePercentage }} of maximum connections are in use"
+
+          - alert: DatabaseSlowQueries
+            expr: |
+              rate(pg_stat_statements_mean_exec_time_seconds[5m]) > 1
+            for: 5m
+            labels:
+              severity: warning
+              team: database
+            annotations:
+              summary: "Database queries are slow"
+              description: "Average query execution time is {{ $value }}s"
+
+      - name: security
+        interval: 30s
+        rules:
+          - alert: UnauthorizedAccessAttempts
+            expr: |
+              sum(rate(http_requests_total{status="401"}[5m])) by (service) > 100
+            for: 5m
+            labels:
+              severity: warning
+              team: security
+            annotations:
+              summary: "High number of unauthorized access attempts"
+              description: "{{ $value }} unauthorized requests per second to {{ $labels.service }}"
+
+          - alert: SSLCertificateExpiringSoon
+            expr: |
+              probe_ssl_earliest_cert_expiry - time() < 86400 * 7
+            for: 1h
+            labels:
+              severity: warning
+              team: infrastructure
+            annotations:
+              summary: "SSL certificate expiring soon"
+              description: "SSL certificate for {{ $labels.instance }} expires in {{ $value | humanizeDuration }}"

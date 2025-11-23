@@ -1,0 +1,121 @@
+---
+name: Quick Meta-Prompt Application
+description: |
+  Fast workflow for applying production meta-prompts from V2 library to any task.
+  Analyzes complexity, selects optimal meta-prompt, and delivers enhanced output.
+
+agents:
+  - meta-agent (via command)
+
+steps:
+  - name: complexity_analysis
+    description: Analyze task complexity and requirements
+    inputs:
+      - task_description
+    outputs:
+      - complexity_score
+      - domain_type
+      - constraints
+      - meta_prompt_recommendation
+    prompt: |
+      Analyze this task to select optimal meta-prompt:
+
+      TASK: ${task_description}
+
+      Determine:
+      1. Complexity (0.0-1.0): How hard is this?
+      2. Domain: code? creative? analysis? research? data?
+      3. Constraints: speed? quality? clarity? formality?
+      4. Format: structured? freeform? mixed?
+
+      SELECTION CRITERIA:
+      - Complexity < 0.3: Simple/direct approach
+      - Complexity 0.3-0.7: Balanced synthesis
+      - Complexity > 0.7: Full autonomous evolution
+
+      Recommend meta-prompt from V2 library:
+      - Autonomous Routing (default, always works)
+      - Principle-Centered (novel problems, 92% quality)
+      - Domain-Bridge (cross-domain, 88% quality)
+      - Quality-Focused (high-stakes, 89% quality)
+      - Emergent Properties (breakthrough, 86% quality)
+      - Cost-Balanced (speed-critical, 82% quality)
+
+  - name: meta_prompt_application
+    description: Apply selected meta-prompt to task
+    depends_on: [complexity_analysis]
+    inputs:
+      - task_description
+      - meta_prompt_recommendation
+      - complexity_score
+    outputs:
+      - enhanced_output
+      - reasoning_trace
+    prompt: |
+      Apply ${meta_prompt_recommendation} meta-prompt:
+
+      [Load full meta-prompt from meta-prompts/v2/META_PROMPTS.md]
+
+      TASK: ${task_description}
+
+      COMPLEXITY: ${complexity_score}
+
+      Execute task using meta-prompt approach with full reasoning transparency.
+
+parameters:
+  task_description:
+    type: string
+    required: true
+    description: Task to enhance with meta-prompting
+    examples:
+      - "Design a distributed caching system"
+      - "Write a compelling blog post about AI ethics"
+      - "Optimize this database query for performance"
+
+  preferred_meta_prompt:
+    type: string
+    required: false
+    description: Override automatic selection
+    options:
+      - "autonomous_routing"
+      - "principle_centered"
+      - "domain_bridge"
+      - "quality_focused"
+      - "emergent_properties"
+      - "cost_balanced"
+
+  quality_priority:
+    type: string
+    required: false
+    default: "balanced"
+    options:
+      - "speed"
+      - "balanced"
+      - "quality"
+    description: Optimize for speed, balance, or maximum quality
+
+output:
+  format: markdown
+  structure:
+    - meta_prompt_used
+    - complexity_analysis
+    - reasoning_trace
+    - final_output
+  save_to: "outputs/${task_id}-meta-enhanced.md"
+
+example_usage: |
+  # Quick enhancement of any task
+  workflow: quick-meta-prompt
+  parameters:
+    task_description: "Implement OAuth2 authentication flow"
+    quality_priority: "quality"
+
+estimated_time: "2-5 minutes"
+token_budget: "5000-15000 tokens"
+
+tags:
+  - meta-prompting
+  - quick
+  - production
+  - v2-library
+---

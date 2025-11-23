@@ -1,0 +1,613 @@
+---
+name: Research Project to GitHub Repository
+description: |
+  Complete meta-workflow for transforming research materials into a production-ready
+  GitHub repository with documentation, infrastructure, and deployment.
+
+  This workflow encapsulates the entire process of:
+  1. Analyzing research materials and identifying key components
+  2. Creating proper repository structure
+  3. Adding agents, commands, workflows, and skills
+  4. Generating comprehensive documentation
+  5. Initializing git and pushing to GitHub
+  6. Creating integration guides and use case documentation
+
+  Use this for: Research papers → Public repos, Internal projects → Open source,
+  Frameworks → Distributable packages, Documentation → Shareable resources
+
+agents:
+  - meta2
+  - MARS
+  - mercurio-orchestrator
+  - deep-researcher
+  - docs-generator
+  - practical-programmer
+
+steps:
+  - name: project_analysis
+    description: Analyze research materials and identify repository components
+    agent: deep-researcher
+    inputs:
+      - project_name
+      - research_materials_path
+      - project_type
+    outputs:
+      - core_components
+      - infrastructure_needs
+      - documentation_structure
+      - target_audience
+    prompt: |
+      Analyze research project for GitHub repository creation:
+
+      PROJECT: ${project_name}
+      MATERIALS: ${research_materials_path}
+      TYPE: ${project_type}
+
+      Analysis Tasks:
+
+      1. Core Components Identification
+         - What are the main deliverables? (frameworks, tools, libraries)
+         - What agents/skills are involved?
+         - What workflows exist?
+         - What commands are needed?
+         - What examples demonstrate usage?
+
+      2. Infrastructure Requirements
+         - Programming languages/runtime needed?
+         - Dependencies and prerequisites?
+         - Build/deployment systems?
+         - Testing frameworks?
+
+      3. Documentation Structure
+         - What needs explanation?
+         - What examples are required?
+         - What integration guides?
+         - What use cases to highlight?
+
+      4. Target Audience
+         - Who will use this?
+         - What's their expertise level?
+         - What documentation do they need?
+         - What examples resonate?
+
+      Output structured analysis ready for repository creation.
+
+  - name: repository_structure_design
+    description: Design optimal repository structure and organization
+    agent: practical-programmer
+    depends_on: [project_analysis]
+    inputs:
+      - core_components
+      - infrastructure_needs
+      - project_type
+    outputs:
+      - directory_structure
+      - file_manifest
+      - organization_plan
+    prompt: |
+      Design repository structure following best practices:
+
+      COMPONENTS: ${core_components}
+      INFRASTRUCTURE: ${infrastructure_needs}
+      TYPE: ${project_type}
+
+      Design Principles:
+      - Clear separation of concerns
+      - Intuitive navigation
+      - Standard conventions (agents/, skills/, workflows/, docs/)
+      - Scalable structure
+      - Easy contribution
+
+      Create:
+      1. Directory tree structure
+      2. File manifest (what goes where)
+      3. Organization rationale
+      4. .gitignore patterns
+      5. LICENSE file recommendation
+
+      Apply DRY, KISS, and SOLID principles to structure.
+
+  - name: infrastructure_creation
+    description: Create agents, commands, workflows, and skills infrastructure
+    agent: meta2
+    depends_on: [repository_structure_design]
+    inputs:
+      - core_components
+      - directory_structure
+      - research_materials_path
+    outputs:
+      - agents_created
+      - commands_created
+      - workflows_created
+      - skills_created
+    prompt: |
+      Create repository infrastructure from research materials:
+
+      COMPONENTS: ${core_components}
+      STRUCTURE: ${directory_structure}
+      MATERIALS: ${research_materials_path}
+
+      Infrastructure Tasks:
+
+      1. Agents
+         - Identify specialized agents from research
+         - Copy relevant agent definitions
+         - Create agent README with selection matrix
+         - Document agent interactions
+
+      2. Commands
+         - Extract slash commands
+         - Create command documentation
+         - Add usage examples
+         - Document flags and parameters
+
+      3. Workflows
+         - Identify multi-step processes
+         - Create workflow YAML files
+         - Document workflow parameters
+         - Add example usages
+
+      4. Skills
+         - Copy domain expertise skills
+         - Create skill documentation
+         - Add examples and patterns
+         - Document integration
+
+      Ensure all infrastructure is:
+      - Well-documented
+      - Has clear examples
+      - Follows naming conventions
+      - Includes README files
+
+  - name: documentation_generation
+    description: Generate comprehensive documentation
+    agent: docs-generator
+    depends_on: [infrastructure_creation]
+    inputs:
+      - project_name
+      - core_components
+      - target_audience
+      - agents_created
+      - workflows_created
+      - skills_created
+    outputs:
+      - readme_md
+      - quick_start_md
+      - integration_guide_md
+      - use_cases_md
+      - repository_summary_md
+    prompt: |
+      Generate complete repository documentation:
+
+      PROJECT: ${project_name}
+      COMPONENTS: ${core_components}
+      AUDIENCE: ${target_audience}
+      INFRASTRUCTURE:
+        - Agents: ${agents_created}
+        - Workflows: ${workflows_created}
+        - Skills: ${skills_created}
+
+      Documentation Files:
+
+      1. README.md (Main entry point)
+         - Project overview and value proposition
+         - Three levels of abstraction (if applicable)
+         - What's included (components)
+         - Quick start section
+         - Repository structure
+         - Theoretical foundation
+         - Features and capabilities
+         - Installation and usage
+         - Examples
+         - Performance metrics
+         - Documentation index
+         - Contributing and license
+
+      2. docs/QUICK_START.md
+         - Get started in 5 minutes
+         - Three options: Direct use, custom generation, programmatic
+         - Common patterns
+         - Troubleshooting
+         - Next steps
+
+      3. docs/INTEGRATION_GUIDE.md (if applicable)
+         - Integration with .claude/ directory
+         - Installation methods
+         - Configuration
+         - Usage examples
+         - Best practices
+
+      4. docs/USE_CASES.md
+         - Comprehensive use cases
+         - Real-world examples
+         - Quality metrics
+         - Validation results
+         - Advanced patterns
+
+      5. REPOSITORY_SUMMARY.md
+         - Complete overview of deployment
+         - Statistics and metrics
+         - What was deployed
+         - Key innovations
+         - Next steps
+
+      Ensure documentation is:
+      - Clear and concise
+      - Well-structured with headers
+      - Rich with examples
+      - Includes metrics/validation
+      - Has actionable next steps
+
+  - name: github_preparation
+    description: Prepare repository for GitHub deployment
+    agent: practical-programmer
+    depends_on: [documentation_generation]
+    inputs:
+      - project_name
+      - directory_structure
+      - infrastructure_needs
+    outputs:
+      - gitignore_content
+      - license_content
+      - github_description
+      - repository_tags
+    prompt: |
+      Prepare repository for GitHub:
+
+      PROJECT: ${project_name}
+      STRUCTURE: ${directory_structure}
+      INFRASTRUCTURE: ${infrastructure_needs}
+
+      Preparation Tasks:
+
+      1. .gitignore
+         - Programming language patterns
+         - IDE and editor files
+         - Build artifacts
+         - Dependency directories
+         - Secrets and credentials
+         - OS-specific files
+
+      2. LICENSE
+         - Recommend appropriate license (MIT typical for frameworks)
+         - Generate LICENSE file with current year
+
+      3. GitHub Description
+         - Concise one-liner (max 100 chars)
+         - Highlights value proposition
+         - Includes key technologies
+
+      4. Repository Tags/Topics
+         - Relevant keywords
+         - Technology tags
+         - Use case tags
+         - Domain tags
+
+      5. Initial Commit Message
+         - Comprehensive first commit
+         - Structure section
+         - Features section
+         - Contents section
+         - Attribution
+
+  - name: git_initialization
+    description: Initialize git repository and create initial commit
+    agent: devops-github-expert
+    depends_on: [github_preparation]
+    inputs:
+      - project_name
+      - gitignore_content
+      - license_content
+    outputs:
+      - git_initialized
+      - initial_commit_hash
+    prompt: |
+      Initialize git repository:
+
+      PROJECT: ${project_name}
+
+      Git Tasks:
+
+      1. Initialize repository
+         cd ${project_path}
+         git init
+
+      2. Create .gitignore
+         Write ${gitignore_content} to .gitignore
+
+      3. Create LICENSE
+         Write ${license_content} to LICENSE
+
+      4. Stage all files
+         git add -A
+
+      5. Create initial commit
+         Use comprehensive commit message:
+         - Title: "Initial commit: ${project_name}"
+         - Structure section
+         - Features section
+         - Contents section
+         - Attribution with Claude Code + Happy
+
+      Return commit hash for verification.
+
+  - name: github_repository_creation
+    description: Create GitHub repository and push code
+    agent: devops-github-expert
+    depends_on: [git_initialization]
+    inputs:
+      - project_name
+      - github_description
+      - repository_tags
+      - is_public
+    outputs:
+      - repository_url
+      - push_status
+    prompt: |
+      Create GitHub repository and push:
+
+      PROJECT: ${project_name}
+      DESCRIPTION: ${github_description}
+      TAGS: ${repository_tags}
+      PUBLIC: ${is_public}
+
+      GitHub Tasks:
+
+      1. Create remote repository
+         gh repo create ${project_name} \
+           --${is_public ? 'public' : 'private'} \
+           --description "${github_description}" \
+           --source=. \
+           --remote=origin
+
+      2. Set repository topics (tags)
+         gh repo edit --add-topic "${repository_tags}"
+
+      3. Push to GitHub
+         git branch -M main
+         git push -u origin main
+
+      4. Verify deployment
+         gh repo view
+
+      Return repository URL and verification status.
+
+  - name: enhancement_iterations
+    description: Add enhancements in logical iterations
+    agent: practical-programmer
+    depends_on: [github_repository_creation]
+    inputs:
+      - enhancement_list
+      - repository_url
+    outputs:
+      - enhancements_added
+      - commit_hashes
+    prompt: |
+      Add enhancements in iterations:
+
+      REPOSITORY: ${repository_url}
+      ENHANCEMENTS: ${enhancement_list}
+
+      For each enhancement batch:
+
+      1. Infrastructure Enhancement
+         - Add missing agents
+         - Add commands
+         - Add workflows
+         - Add skills
+         - Create README files for each
+
+      2. Documentation Enhancement
+         - Integration guides
+         - Use case documentation
+         - Advanced patterns
+         - Troubleshooting
+
+      3. Commit and push
+         - Clear commit message
+         - Describe what was added
+         - List files changed
+         - Attribution
+
+      Each iteration should be:
+      - Focused on one enhancement type
+      - Fully documented
+      - Committed separately
+      - Pushed immediately
+
+  - name: validation_and_summary
+    description: Validate deployment and create final summary
+    agent: mercurio-orchestrator
+    depends_on: [enhancement_iterations]
+    inputs:
+      - repository_url
+      - project_name
+      - all_commits
+    outputs:
+      - validation_report
+      - final_summary
+      - next_steps
+    prompt: |
+      Validate deployment and create summary:
+
+      REPOSITORY: ${repository_url}
+      PROJECT: ${project_name}
+      COMMITS: ${all_commits}
+
+      Validation:
+
+      1. Repository Structure
+         - All directories present?
+         - Files in correct locations?
+         - .gitignore working?
+         - LICENSE file present?
+
+      2. Documentation Completeness
+         - README comprehensive?
+         - Quick start clear?
+         - Integration guide helpful?
+         - Use cases compelling?
+
+      3. Infrastructure
+         - Agents documented?
+         - Commands functional?
+         - Workflows complete?
+         - Skills integrated?
+
+      4. GitHub Setup
+         - Repository public/private as intended?
+         - Description accurate?
+         - Topics/tags relevant?
+         - Commits clear and descriptive?
+
+      Summary:
+
+      Create comprehensive summary showing:
+      - What was deployed
+      - Repository statistics (files, size, lines)
+      - Infrastructure inventory
+      - Documentation inventory
+      - Commits and timeline
+      - Next steps for users
+      - Success metrics
+
+      Include beautiful ASCII art summary boxes!
+
+parameters:
+  project_name:
+    type: string
+    required: true
+    description: Name of the project/repository
+    examples:
+      - "meta-prompting-framework"
+      - "distributed-systems-framework"
+      - "research-toolkit"
+
+  research_materials_path:
+    type: string
+    required: true
+    description: Path to research materials (papers, frameworks, code, docs)
+    examples:
+      - "/path/to/research/materials"
+      - "~/Documents/research-project"
+
+  project_type:
+    type: string
+    required: true
+    options:
+      - "framework"       # Meta-prompting framework, theoretical framework
+      - "library"         # Code library, skill library
+      - "toolkit"         # Collection of tools and utilities
+      - "documentation"   # Documentation project, knowledge base
+      - "research"        # Research synthesis, paper analysis
+    description: Type of project being created
+
+  is_public:
+    type: boolean
+    required: false
+    default: true
+    description: Create public or private GitHub repository
+
+  include_enhancements:
+    type: boolean
+    required: false
+    default: true
+    description: Include enhancement iterations (agents, skills, workflows)
+
+  enhancement_list:
+    type: array
+    required: false
+    default:
+      - "infrastructure"  # Agents, commands, workflows, skills
+      - "documentation"   # Integration guides, use cases
+      - "examples"        # Usage examples, patterns
+    description: List of enhancements to add in iterations
+
+  target_audience:
+    type: string
+    required: false
+    default: "developers"
+    options:
+      - "developers"
+      - "researchers"
+      - "academics"
+      - "general"
+    description: Primary audience for documentation
+
+output:
+  format: github_repository
+  includes:
+    - repository_url
+    - commit_history
+    - validation_report
+    - final_summary
+  creates:
+    - "GitHub repository with complete structure"
+    - "Comprehensive documentation (README, guides, use cases)"
+    - "Infrastructure (agents, commands, workflows, skills)"
+    - "Git history with clear commits"
+    - "Integration with .claude/ (if applicable)"
+
+example_usage: |
+  # Example 1: Meta-prompting framework to GitHub
+  workflow: research-project-to-github
+  parameters:
+    project_name: "meta-prompting-framework"
+    research_materials_path: "/path/to/meta-prompting-research"
+    project_type: "framework"
+    is_public: true
+    include_enhancements: true
+    enhancement_list:
+      - "infrastructure"
+      - "documentation"
+
+  # Example 2: Research toolkit
+  workflow: research-project-to-github
+  parameters:
+    project_name: "quantum-computing-toolkit"
+    research_materials_path: "~/research/quantum"
+    project_type: "toolkit"
+    is_public: true
+    target_audience: "researchers"
+
+  # Example 3: Internal framework (private)
+  workflow: research-project-to-github
+  parameters:
+    project_name: "company-ml-framework"
+    research_materials_path: "/work/ml-research"
+    project_type: "framework"
+    is_public: false
+
+estimated_time: "30-45 minutes"
+token_budget: "100000-200000 tokens"
+
+quality_metrics:
+  structure: "Clean, intuitive, scalable"
+  documentation: "Comprehensive, clear, actionable"
+  infrastructure: "Complete, documented, integrated"
+  deployment: "Successful, verified, accessible"
+
+benefits:
+  - "90% reduction in repository setup time"
+  - "Standardized structure and documentation"
+  - "Complete infrastructure out of the box"
+  - "Professional presentation"
+  - "Ready for collaboration"
+  - "Integrated with .claude/ ecosystem"
+
+use_cases:
+  - "Research framework → Open source repository"
+  - "Internal project → Public release"
+  - "Paper implementation → Shareable code"
+  - "Documentation → Knowledge base"
+  - "Prototype → Production package"
+
+tags:
+  - repository
+  - github
+  - deployment
+  - meta-workflow
+  - automation
+  - documentation
+  - infrastructure
+---
