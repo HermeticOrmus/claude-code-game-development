@@ -1,0 +1,322 @@
+name: game-development
+description: Complete game development workflow with meta-prompting iteration
+version: 1.0.0
+
+# Game Development Workflow
+# Orchestrates the complete process from concept to playable game
+
+triggers:
+  - pattern: "/game-prototype"
+  - pattern: "create a game"
+  - pattern: "build a game"
+  - pattern: "make a game"
+
+phases:
+  - name: analysis
+    description: Analyze game requirements and complexity
+    steps:
+      - skill: analyze-complexity
+        input:
+          task_type: game_development
+          context: $USER_INPUT
+        output: complexity_score
+
+      - determine_strategy:
+          if: complexity_score < 0.3
+          then: simple_game_flow
+          elif: complexity_score < 0.7
+          then: medium_game_flow
+          else: complex_game_flow
+
+  - name: architecture
+    description: Design game architecture
+    steps:
+      - skill: game-architecture
+        input:
+          game_type: $GAME_TYPE
+          features: $FEATURES
+          complexity: $complexity_score
+        output: architecture_plan
+
+      - create_structure:
+          directories:
+            - src/
+            - src/systems/
+            - src/entities/
+            - src/utils/
+            - assets/
+            - public/
+
+  - name: core_systems
+    description: Generate core game systems
+    iteration:
+      max_iterations: 3
+      quality_threshold: 0.90
+    steps:
+      - skill: game-system-generator
+        input:
+          system: game-loop
+          architecture: $architecture_plan
+        output: game_loop_code
+
+      - skill: assess-quality
+        input:
+          code: $game_loop_code
+          criteria:
+            - frame_rate_independence: 0.25
+            - error_handling: 0.20
+            - code_structure: 0.20
+            - performance: 0.20
+            - documentation: 0.15
+        output: quality_score
+
+      - iterate_if_needed:
+          condition: quality_score < 0.90
+          action:
+            - skill: extract-context
+              input: $game_loop_code
+              output: improvement_context
+            - skill: meta-prompt-iterate
+              input:
+                code: $game_loop_code
+                context: $improvement_context
+              output: improved_code
+
+  - name: entity_systems
+    description: Generate entity and physics systems
+    parallel: true
+    steps:
+      - skill: game-system-generator
+        input:
+          system: physics
+          requirements:
+            - gravity
+            - velocity
+            - friction
+            - collision_response
+        output: physics_system
+
+      - skill: game-system-generator
+        input:
+          system: input
+          requirements:
+            - keyboard
+            - mouse
+            - touch
+            - gamepad_optional
+        output: input_system
+
+      - skill: game-system-generator
+        input:
+          system: collision
+          requirements:
+            - aabb
+            - circle
+            - spatial_partitioning
+        output: collision_system
+
+  - name: game_logic
+    description: Generate game-specific logic
+    steps:
+      - skill: game-system-generator
+        input:
+          system: game_logic
+          game_type: $GAME_TYPE
+          rules: $GAME_RULES
+        output: game_logic_code
+
+      - skill: assess-quality
+        input:
+          code: $game_logic_code
+          criteria:
+            - correctness: 0.30
+            - game_feel: 0.25
+            - edge_cases: 0.20
+            - extensibility: 0.15
+            - performance: 0.10
+        output: logic_quality
+
+  - name: rendering
+    description: Generate rendering system
+    steps:
+      - skill: game-system-generator
+        input:
+          system: renderer
+          requirements:
+            - canvas_2d
+            - sprite_support
+            - debug_mode
+            - camera_optional
+        output: renderer_code
+
+  - name: optional_features
+    description: Generate optional features based on flags
+    conditional: true
+    steps:
+      - if: $FLAGS.includes('--sound')
+        skill: game-system-generator
+        input:
+          system: audio
+          requirements:
+            - web_audio_api
+            - sound_pooling
+            - music_support
+        output: audio_system
+
+      - if: $FLAGS.includes('--particles')
+        skill: game-system-generator
+        input:
+          system: particles
+          requirements:
+            - object_pooling
+            - various_emitters
+            - performance_optimized
+        output: particle_system
+
+      - if: $FLAGS.includes('--ai')
+        skill: game-system-generator
+        input:
+          system: ai
+          requirements:
+            - pathfinding_optional
+            - state_machine
+            - difficulty_scaling
+        output: ai_system
+
+  - name: integration
+    description: Integrate all systems
+    steps:
+      - integrate:
+          main_file: src/main.js
+          systems:
+            - $game_loop_code
+            - $physics_system
+            - $input_system
+            - $collision_system
+            - $game_logic_code
+            - $renderer_code
+            - $audio_system?
+            - $particle_system?
+            - $ai_system?
+
+      - skill: assess-quality
+        input:
+          code: integration_result
+          criteria:
+            - imports_correct: 0.20
+            - initialization_order: 0.20
+            - event_flow: 0.20
+            - error_handling: 0.20
+            - completeness: 0.20
+        output: integration_quality
+
+  - name: packaging
+    description: Package as playable game
+    steps:
+      - generate:
+          file: public/index.html
+          template: html_template
+          variables:
+            title: $GAME_NAME
+            canvas_width: 800
+            canvas_height: 600
+
+      - generate:
+          file: public/style.css
+          template: css_template
+
+      - generate:
+          file: README.md
+          template: readme_template
+          variables:
+            game_name: $GAME_NAME
+            description: $GAME_DESCRIPTION
+            controls: $CONTROLS
+            features: $FEATURES
+
+  - name: verification
+    description: Final quality check
+    steps:
+      - skill: assess-quality
+        input:
+          project: complete
+          criteria:
+            - playability: 0.30
+            - performance: 0.25
+            - code_quality: 0.20
+            - documentation: 0.15
+            - extensibility: 0.10
+        output: final_quality
+
+      - if: final_quality < 0.85
+        iterate:
+          target: weakest_component
+          max_iterations: 2
+
+output:
+  success:
+    message: "Game generated successfully!"
+    files:
+      - public/index.html
+      - src/main.js
+      - src/systems/*
+      - README.md
+    quality: $final_quality
+
+  failure:
+    message: "Game generation encountered issues"
+    issues: $issues
+    partial_output: $partial_files
+
+# Templates
+templates:
+  html_template: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{title}}</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <canvas id="game" width="{{canvas_width}}" height="{{canvas_height}}"></canvas>
+        <script type="module" src="/src/main.js"></script>
+    </body>
+    </html>
+
+  css_template: |
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: #1a1a2e;
+    }
+    canvas {
+        border: 2px solid #16213e;
+        border-radius: 4px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+  readme_template: |
+    # {{game_name}}
+
+    {{description}}
+
+    ## Controls
+    {{controls}}
+
+    ## Features
+    {{features}}
+
+    ## Running the Game
+    ```bash
+    npm run dev
+    ```
+
+    ## Built With
+    - Claude Code + Meta-Prompting Framework
+    - HTML5 Canvas
+    - JavaScript ES6+

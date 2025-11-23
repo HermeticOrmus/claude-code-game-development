@@ -93,6 +93,18 @@ temp/
 # Yarn Integrity file
 .yarn-integrity
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+.venv/
+ENV/
+
+# Meta-prompting framework temp files
+.meta-prompting-temp/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

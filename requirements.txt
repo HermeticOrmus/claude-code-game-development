@@ -1,0 +1,15 @@
+# Core dependencies for meta-prompting engine
+anthropic>=0.40.0
+openai>=1.0.0
+python-dotenv>=1.0.0
+
+# For embeddings
+voyageai>=0.2.0
+
+# Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+
+# Utilities
+pydantic>=2.0.0
+numpy>=1.24.0

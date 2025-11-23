@@ -1,0 +1,462 @@
+---
+name: Research Specification Generation
+description: |
+  Complete workflow for generating high-quality research specifications from papers,
+  ideas, or domain names. Produces categorically rigorous, hierarchically structured
+  specifications ready for implementation or proposal submission.
+
+agents:
+  - deep-researcher
+  - meta2
+  - MARS
+  - mercurio-orchestrator
+  - MERCURIO
+
+steps:
+  - name: input_analysis
+    description: Analyze input type and extract initial requirements
+    agent: deep-researcher
+    inputs:
+      - input_type  # "paper", "idea", "domain", "multi_paper"
+      - input_content
+    outputs:
+      - analyzed_requirements
+      - domain_identification
+      - complexity_assessment
+    prompt: |
+      Analyze the research specification input:
+
+      INPUT TYPE: ${input_type}
+      CONTENT: ${input_content}
+
+      Tasks:
+      1. Identify the core research domain
+      2. Assess complexity and scope
+      3. List key concepts, primitives, operations
+      4. Determine what additional research needed
+      5. Recommend framework depth (3, 5, 7, or 10 levels)
+
+      Output structured analysis for framework generation.
+
+  - name: literature_review
+    description: Comprehensive literature review and domain research
+    agent: MARS
+    depends_on: [input_analysis]
+    inputs:
+      - domain_identification
+      - complexity_assessment
+    outputs:
+      - related_papers
+      - domain_primitives
+      - state_of_art
+      - research_gaps
+    prompt: |
+      Conduct comprehensive literature review for:
+
+      DOMAIN: ${domain_identification}
+      COMPLEXITY: ${complexity_assessment}
+
+      Research Operations:
+      1. Parallel search across ArXiv, Google Scholar, papers
+      2. Identify foundational papers (>100 citations)
+      3. Find recent work (last 2-3 years)
+      4. Extract domain primitives and operations
+      5. Map current state-of-the-art
+      6. Identify gaps and unexplored areas
+
+      Provide synthesis ready for framework generation.
+
+  - name: categorical_structure_extraction
+    description: Extract categorical structure from domain
+    agent: meta2
+    depends_on: [literature_review]
+    inputs:
+      - domain_primitives
+      - state_of_art
+    outputs:
+      - category_definition
+      - objects_morphisms
+      - composition_rules
+      - complexity_hierarchy
+    prompt: |
+      Extract categorical structure from domain analysis:
+
+      DOMAIN PRIMITIVES: ${domain_primitives}
+      STATE OF ART: ${state_of_art}
+
+      Categorical Mapping:
+      1. Define category objects (types, structures)
+      2. Identify morphisms (operations, transformations)
+      3. Prove composition is associative
+      4. Find identity morphisms
+      5. Establish complexity hierarchy
+      6. Determine if category is:
+         - Closed (exponential objects exist?)
+         - Monoidal (tensor product?)
+         - Enriched (extra structure?)
+
+      Output categorical foundations for framework.
+
+  - name: framework_generation
+    description: Generate complete hierarchical research specification
+    agent: meta2
+    depends_on: [categorical_structure_extraction]
+    inputs:
+      - domain_identification
+      - depth_levels
+      - categorical_framework_type
+      - theoretical_depth
+      - category_definition
+      - research_gaps
+    outputs:
+      - complete_specification
+      - level_definitions
+      - formal_proofs
+      - implementation_guidance
+    prompt: |
+      Generate complete research specification:
+
+      PARAMETERS:
+      - DOMAIN: ${domain_identification}
+      - DEPTH_LEVELS: ${depth_levels}
+      - CATEGORICAL_FRAMEWORK: ${categorical_framework_type}
+      - THEORETICAL_DEPTH: ${theoretical_depth}
+
+      CATEGORY DEFINITION:
+      ${category_definition}
+
+      RESEARCH GAPS:
+      ${research_gaps}
+
+      Execute Full 7-Phase Generation:
+
+      Phase 1: Domain Analysis (DONE - using literature review)
+
+      Phase 2: Level Architecture Design
+        - Design N-level progression
+        - Ensure qualitative leaps between levels
+        - Map known work to levels L1-L(N-2)
+        - Reserve L(N-1) and L(N) for novel contributions
+
+      Phase 3: Categorical Framework Application
+        - Apply ${categorical_framework_type} uniformly
+        - Establish natural equivalence between levels
+        - Prove functoriality of level transitions
+
+      Phase 4: Level-Specific Generation
+        For each level i ∈ {1..N}:
+          - Theoretical foundation
+          - Formal definitions
+          - Key theorems and proofs
+          - Algorithms
+          - Complexity analysis
+          - Concrete examples
+          - Implementation notes
+          - References to literature
+
+      Phase 5: Cross-Level Integration
+        - Prove inclusion chain: L₁ ⊂ L₂ ⊂ ... ⊂ Lₙ
+        - Establish functors between adjacent levels
+        - Verify natural transformations
+        - Create decision tree for level selection
+
+      Phase 6: Theoretical Justification
+        - Categorical proofs of key properties
+        - Completeness arguments
+        - Soundness guarantees
+        - Complexity bounds
+
+      Phase 7: Output Formatting
+        - Executive summary
+        - Background and related work
+        - Categorical foundations
+        - N level specifications
+        - Cross-level integration
+        - Implementation roadmap
+        - Research directions
+        - Bibliography
+
+  - name: validation_and_verification
+    description: Validate specification completeness and correctness
+    agent: MARS
+    depends_on: [framework_generation]
+    inputs:
+      - complete_specification
+      - related_papers
+      - domain_identification
+    outputs:
+      - validation_report
+      - completeness_score
+      - correctness_verification
+      - identified_issues
+    prompt: |
+      Validate the generated research specification:
+
+      SPECIFICATION:
+      ${complete_specification}
+
+      RELATED WORK:
+      ${related_papers}
+
+      DOMAIN: ${domain_identification}
+
+      Validation Operations:
+
+      1. Completeness Check
+         - All domain primitives covered?
+         - All key operations represented?
+         - Progression from basic to advanced complete?
+         - Research gaps addressed?
+
+      2. Correctness Verification
+         - Categorical proofs valid?
+         - Definitions consistent?
+         - Examples compile/execute?
+         - Theorems proven?
+
+      3. Coverage Analysis
+         - Map specification to related papers
+         - Identify missing concepts
+         - Check for contradictions
+         - Verify novel contributions are novel
+
+      4. Quality Assessment
+         - Clarity of exposition
+         - Completeness of examples
+         - Rigor of proofs
+         - Usability of implementation guidance
+
+      Provide detailed validation report with scores and improvement suggestions.
+
+  - name: ethical_and_practical_review
+    description: Review ethical implications and practical feasibility
+    agent: MERCURIO
+    depends_on: [validation_and_verification]
+    inputs:
+      - complete_specification
+      - validation_report
+    outputs:
+      - ethical_assessment
+      - feasibility_analysis
+      - recommendations
+    prompt: |
+      Conduct three-plane review of research specification:
+
+      SPECIFICATION:
+      ${complete_specification}
+
+      VALIDATION:
+      ${validation_report}
+
+      Three-Plane Analysis:
+
+      MENTAL PLANE (Intellectual Rigor):
+      - Is the theory sound?
+      - Are proofs mathematically correct?
+      - Is novelty genuine?
+      - Does it advance understanding?
+
+      PHYSICAL PLANE (Practical Feasibility):
+      - Can this be implemented?
+      - What are resource requirements?
+      - Are examples realistic?
+      - Is timeline achievable?
+
+      SPIRITUAL PLANE (Ethical Considerations):
+      - What are potential misuses?
+      - Are there fairness concerns?
+      - Environmental impact?
+      - Societal implications?
+
+      Provide integrated assessment balancing all three planes.
+
+  - name: synthesis_and_documentation
+    description: Synthesize final specification with all improvements
+    agent: mercurio-orchestrator
+    depends_on: [ethical_and_practical_review]
+    inputs:
+      - complete_specification
+      - validation_report
+      - ethical_assessment
+      - identified_issues
+    outputs:
+      - final_specification
+      - executive_summary
+      - implementation_roadmap
+      - publication_draft
+    prompt: |
+      Synthesize final research specification:
+
+      INITIAL SPEC:
+      ${complete_specification}
+
+      VALIDATION:
+      ${validation_report}
+
+      ETHICAL REVIEW:
+      ${ethical_assessment}
+
+      ISSUES TO ADDRESS:
+      ${identified_issues}
+
+      Synthesis Tasks:
+
+      1. Incorporate all validation feedback
+      2. Address identified issues
+      3. Add ethical considerations section
+      4. Refine implementation roadmap
+      5. Polish exposition and examples
+      6. Create executive summary
+      7. Generate publication-ready draft
+
+      Output Formats:
+      - Markdown (main specification)
+      - LaTeX (for paper submission)
+      - PDF (for sharing)
+      - Code examples (separate files)
+
+      Include:
+      - Title and abstract
+      - Introduction and motivation
+      - Background and related work
+      - Categorical foundations
+      - N-level specification
+      - Implementation guidance
+      - Validation results
+      - Ethical considerations
+      - Future work
+      - Bibliography
+
+parameters:
+  input_type:
+    type: string
+    required: true
+    options:
+      - "paper"       # Single research paper
+      - "idea"        # Research idea description
+      - "domain"      # Domain name for exploration
+      - "multi_paper" # Multiple papers to synthesize
+    description: Type of input for specification generation
+
+  input_content:
+    type: string
+    required: true
+    description: |
+      Content based on input_type:
+      - paper: Path to PDF or paper title/arXiv ID
+      - idea: Detailed description of research idea
+      - domain: Domain name (e.g., "quantum error correction")
+      - multi_paper: List of paper paths or IDs
+
+  depth_levels:
+    type: integer
+    required: false
+    default: 7
+    min: 3
+    max: 10
+    description: Number of sophistication levels in specification
+
+  categorical_framework_type:
+    type: string
+    required: false
+    default: "natural_equivalence"
+    options:
+      - "natural_equivalence"
+      - "functors"
+      - "rewrite"
+      - "inclusion"
+      - "internal_hom"
+      - "comprehensive"
+    description: Categorical structure to emphasize
+
+  theoretical_depth:
+    type: string
+    required: false
+    default: "comprehensive"
+    options:
+      - "minimal"
+      - "moderate"
+      - "comprehensive"
+      - "research_level"
+    description: Level of theoretical rigor
+
+  include_implementation:
+    type: boolean
+    required: false
+    default: true
+    description: Include implementation guidance and code examples
+
+  target_format:
+    type: string
+    required: false
+    default: "all"
+    options:
+      - "markdown"
+      - "latex"
+      - "pdf"
+      - "all"
+    description: Output format(s) for specification
+
+output:
+  format: multiple
+  files:
+    - specification.md      # Complete specification in Markdown
+    - specification.tex     # LaTeX version for papers
+    - specification.pdf     # PDF for sharing
+    - examples/             # Code examples directory
+    - validation-report.md  # Validation results
+    - roadmap.md            # Implementation roadmap
+  save_to: "research-specs/${domain_name}-spec/"
+
+example_usage: |
+  # Example 1: Generate spec from research paper
+  workflow: research-spec-generation
+  parameters:
+    input_type: "paper"
+    input_content: "path/to/paper.pdf"
+    depth_levels: 7
+    theoretical_depth: "comprehensive"
+
+  # Example 2: Generate spec from research idea
+  workflow: research-spec-generation
+  parameters:
+    input_type: "idea"
+    input_content: "Adaptive meta-prompting using reinforcement learning to optimize prompt selection based on task characteristics and historical performance"
+    depth_levels: 5
+    theoretical_depth: "moderate"
+
+  # Example 3: Explore unfamiliar domain
+  workflow: research-spec-generation
+  parameters:
+    input_type: "domain"
+    input_content: "topological quantum computing"
+    depth_levels: 7
+    theoretical_depth: "research_level"
+
+  # Example 4: Synthesize multiple papers
+  workflow: research-spec-generation
+  parameters:
+    input_type: "multi_paper"
+    input_content: |
+      - papers/paxos.pdf
+      - papers/raft.pdf
+      - papers/viewstamped-replication.pdf
+    depth_levels: 7
+
+estimated_time: "2-4 hours"
+token_budget: "80000-150000 tokens"
+
+quality_metrics:
+  completeness: ">95%"
+  correctness: "Formally proven"
+  usability: "Progressive L1→L7"
+  novelty: "L6-L7 contributions identified"
+
+tags:
+  - research
+  - specification
+  - categorical
+  - multi-agent
+  - validation
+  - publication-ready
+---
