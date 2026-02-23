@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://ormus.solutions/mascot/pixellab_liquid_to_sword.gif" alt="Claude Code Game Dev" width="128" style="image-rendering: pixelated;" />
+  <img src="https://ormus.solutions/mascot/pixellab_liquid_to_n64.gif" alt="Claude Code Game Dev" width="128" style="image-rendering: pixelated;" />
 </p>
 
 <h1 align="center">Claude Code Game Dev</h1>
@@ -17,7 +17,6 @@
 </p>
 
 ---
-
 ```
   ██████╗██╗      █████╗ ██╗   ██╗██████╗ ███████╗     ██████╗ ██████╗ ██████╗ ███████╗
  ██╔════╝██║     ██╔══██╗██║   ██║██╔══██╗██╔════╝    ██╔════╝██╔═══██╗██╔══██╗██╔════╝
@@ -206,7 +205,6 @@ Get your first game running in **10 minutes**:
 If you haven't already, install Claude Code following the official documentation:
 
 ```bash
-# Installation instructions vary by platform
 # Visit: https://docs.claude.com/claude-code
 ```
 
