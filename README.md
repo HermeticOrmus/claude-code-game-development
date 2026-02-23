@@ -1,4 +1,22 @@
-# Claude Code Game Development
+<p align="center">
+  <img src="https://ormus.solutions/mascot/pixellab_liquid_to_sword.gif" alt="Claude Code Game Dev" width="128" style="image-rendering: pixelated;" />
+</p>
+
+<h1 align="center">Claude Code Game Dev</h1>
+
+<p align="center">
+  <em>Game development patterns and workflows for Claude Code</em>
+</p>
+
+<p align="center">
+  <a href="https://github.com/HermeticOrmus/claude-code-game-development/stargazers"><img src="https://img.shields.io/github/stars/HermeticOrmus/claude-code-game-development?style=flat-square&color=aa8142" alt="Stars" /></a>
+  <a href="https://github.com/HermeticOrmus/claude-code-game-development/blob/main/LICENSE"><img src="https://img.shields.io/github/license/HermeticOrmus/claude-code-game-development?style=flat-square&color=aa8142" alt="License" /></a>
+  <a href="https://github.com/HermeticOrmus/claude-code-game-development/commits"><img src="https://img.shields.io/github/last-commit/HermeticOrmus/claude-code-game-development?style=flat-square&color=aa8142" alt="Last Commit" /></a>
+  <img src="https://img.shields.io/badge/Python-aa8142?style=flat-square&logo=python&logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/Claude Code-aa8142?style=flat-square&logo=anthropic&logoColor=white" alt="Claude Code" />
+</p>
+
+---
 
 ```
   ██████╗██╗      █████╗ ██╗   ██╗██████╗ ███████╗     ██████╗ ██████╗ ██████╗ ███████╗
