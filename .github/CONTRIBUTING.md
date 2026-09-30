@@ -1,3 +1,5 @@
+> **Start here:** this repository's own guide is [CONTRIBUTING.md](../CONTRIBUTING.md) at the root: [Ways to contribute](../CONTRIBUTING.md#ways-to-contribute) (Menu items, good first issues, routing misses, new plugins) and how to test a change locally. The text below came over with the plugins derived from [wshobson/agents](https://github.com/wshobson/agents) and is kept for reference.
+
 # Contributing to Agents
 
 Thank you for your interest in contributing to this collection of Claude Code subagents! This guide will help you contribute effectively while maintaining a positive community environment.
