@@ -1,0 +1,20 @@
+{
+  "name": "business-analytics",
+  "version": "1.2.0",
+  "description": "Business metrics analysis, KPI tracking, financial reporting, and data-driven decision making",
+  "author": {
+    "name": "Seth Hobson",
+    "url": "https://github.com/wshobson"
+  },
+  "homepage": "https://github.com/wshobson/agents",
+  "repository": "https://github.com/wshobson/agents",
+  "license": "MIT",
+  "keywords": [
+    "business",
+    "analytics",
+    "metrics",
+    "kpi",
+    "reporting",
+    "bi"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "debugging-toolkit",
+  "version": "1.2.0",
+  "description": "Interactive debugging, developer experience optimization, and smart debugging workflows",
+  "author": {
+    "name": "Seth Hobson",
+    "url": "https://github.com/wshobson"
+  },
+  "homepage": "https://github.com/wshobson/agents",
+  "repository": "https://github.com/wshobson/agents",
+  "license": "MIT",
+  "keywords": [
+    "debugging",
+    "developer-experience",
+    "troubleshooting",
+    "essential"
+  ]
+}
