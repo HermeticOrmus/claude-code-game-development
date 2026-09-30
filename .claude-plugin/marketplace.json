@@ -28,7 +28,7 @@
         "tutorials"
       ],
       "category": "documentation",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/doc-generate.md",
         "./commands/code-explain.md"
@@ -58,7 +58,7 @@
         "essential"
       ],
       "category": "development",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/smart-debug.md"
       ],
@@ -87,7 +87,7 @@
         "essential"
       ],
       "category": "workflows",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/pr-enhance.md",
         "./commands/onboard.md",
@@ -158,7 +158,7 @@
         "cross-platform"
       ],
       "category": "development",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/component-scaffold.md"
       ],
@@ -187,7 +187,7 @@
         "testing"
       ],
       "category": "workflows",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/full-stack-feature.md"
       ],
@@ -218,7 +218,7 @@
         "automation"
       ],
       "category": "testing",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/test-generate.md"
       ],
@@ -246,7 +246,7 @@
         "red-green-refactor"
       ],
       "category": "workflows",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/tdd-cycle.md",
         "./commands/tdd-red.md",
@@ -277,7 +277,7 @@
         "quality"
       ],
       "category": "quality",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/ai-review.md"
       ],
@@ -304,7 +304,7 @@
         "cleanup"
       ],
       "category": "utilities",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/refactor-clean.md",
         "./commands/tech-debt.md",
@@ -335,7 +335,7 @@
         "upgrades"
       ],
       "category": "utilities",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/deps-audit.md"
       ],
@@ -362,7 +362,7 @@
         "troubleshooting"
       ],
       "category": "utilities",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/error-analysis.md",
         "./commands/error-trace.md",
@@ -392,7 +392,7 @@
         "issue-management"
       ],
       "category": "utilities",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/issue.md",
         "./commands/standup-notes.md"
@@ -458,7 +458,7 @@
         "optimization"
       ],
       "category": "ai-ml",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/multi-agent-optimize.md",
         "./commands/improve-agent.md"
@@ -486,7 +486,7 @@
         "memory"
       ],
       "category": "ai-ml",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/context-save.md",
         "./commands/context-restore.md"
@@ -549,7 +549,7 @@
         "batch-processing"
       ],
       "category": "data",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/data-driven-feature.md",
         "./commands/data-pipeline.md"
@@ -578,7 +578,7 @@
         "troubleshooting"
       ],
       "category": "operations",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/incident-response.md",
         "./commands/smart-fix.md"
@@ -607,7 +607,7 @@
         "debugging"
       ],
       "category": "operations",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/error-trace.md",
         "./commands/error-analysis.md",
@@ -637,7 +637,7 @@
         "observability"
       ],
       "category": "operations",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/debug-trace.md"
       ],
@@ -707,7 +707,7 @@
         "blue-green"
       ],
       "category": "infrastructure",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/deployment-engineer.md",
@@ -733,7 +733,7 @@
         "deployment-safety"
       ],
       "category": "infrastructure",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/config-validate.md"
       ],
@@ -870,7 +870,7 @@
         "core-web-vitals"
       ],
       "category": "performance",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/performance-optimization.md"
       ],
@@ -899,7 +899,7 @@
         "scalability"
       ],
       "category": "performance",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/cost-optimize.md"
       ],
@@ -930,7 +930,7 @@
         "best-practices"
       ],
       "category": "quality",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/full-review.md",
         "./commands/pr-enhance.md"
@@ -959,7 +959,7 @@
         "quality-analysis"
       ],
       "category": "quality",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/ai-review.md",
         "./commands/multi-agent-review.md"
@@ -1025,7 +1025,7 @@
         "dependencies"
       ],
       "category": "modernization",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/deps-audit.md",
         "./commands/tech-debt.md",
@@ -1085,7 +1085,7 @@
         "mongodb"
       ],
       "category": "database",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/sql-migrations.md",
         "./commands/migration-observability.md"
@@ -1149,7 +1149,7 @@
         "regulatory"
       ],
       "category": "security",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/compliance-check.md"
       ],
@@ -1177,7 +1177,7 @@
         "oauth"
       ],
       "category": "security",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/backend-security-coder.md",
@@ -1204,7 +1204,7 @@
         "csp"
       ],
       "category": "security",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/xss-scan.md"
       ],
@@ -1234,7 +1234,7 @@
         "jsonschema"
       ],
       "category": "data",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/backend-security-coder.md"
@@ -1293,7 +1293,7 @@
         "observability"
       ],
       "category": "api",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/api-mock.md"
       ],
@@ -1320,7 +1320,7 @@
         "content-audit"
       ],
       "category": "marketing",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/seo-content-writer.md",
@@ -1348,7 +1348,7 @@
         "snippets"
       ],
       "category": "marketing",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/seo-meta-optimizer.md",
@@ -1377,7 +1377,7 @@
         "monitoring"
       ],
       "category": "marketing",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/seo-content-refresher.md",
@@ -1406,7 +1406,7 @@
         "mermaid"
       ],
       "category": "documentation",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/doc-generate.md"
       ],
@@ -1439,7 +1439,7 @@
         "flutter"
       ],
       "category": "development",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/multi-platform.md"
       ],
@@ -1473,7 +1473,7 @@
         "bi"
       ],
       "category": "business",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/business-analyst.md"
@@ -1501,7 +1501,7 @@
         "policies"
       ],
       "category": "business",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/hr-pro.md",
@@ -1528,7 +1528,7 @@
         "automation"
       ],
       "category": "business",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/customer-support.md",
@@ -1554,7 +1554,7 @@
         "social-media"
       ],
       "category": "marketing",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/content-marketer.md",
@@ -1615,7 +1615,7 @@
         "risk-management"
       ],
       "category": "finance",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/quant-analyst.md",
@@ -1677,7 +1677,7 @@
         "spigot"
       ],
       "category": "gaming",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/unity-developer.md",
@@ -1704,7 +1704,7 @@
         "inclusive-design"
       ],
       "category": "accessibility",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/accessibility-audit.md"
       ],
@@ -1805,7 +1805,7 @@
         "performance"
       ],
       "category": "languages",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/rust-project.md"
       ],
@@ -1837,7 +1837,7 @@
         "dotnet"
       ],
       "category": "languages",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/java-pro.md",
@@ -1865,7 +1865,7 @@
         "web-scripting"
       ],
       "category": "languages",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/php-pro.md",
@@ -1892,7 +1892,7 @@
         "distributed"
       ],
       "category": "languages",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/elixir-pro.md"
@@ -1919,7 +1919,7 @@
         "multiple-dispatch"
       ],
       "category": "languages",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/julia-pro.md"
@@ -1948,7 +1948,7 @@
         "stm32"
       ],
       "category": "languages",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/arm-cortex-expert.md"
@@ -1983,9 +1983,9 @@
         "./agents/posix-shell-pro.md"
       ],
       "skills": [
-        "./skills/bash-defensive-patterns/SKILL.md",
-        "./skills/shellcheck-configuration/SKILL.md",
-        "./skills/bats-testing-patterns/SKILL.md"
+        "./skills/bash-defensive-patterns",
+        "./skills/shellcheck-configuration",
+        "./skills/bats-testing-patterns"
       ]
     },
     {
