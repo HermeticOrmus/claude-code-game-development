@@ -1,0 +1,21 @@
+{
+  "name": "unity-development",
+  "version": "2.0.0",
+  "description": "Unity 6 development: MonoBehaviour or DOTS architecture, URP and HDRP, Addressables, the Input System, ScriptableObjects, and idiomatic C#.",
+  "author": {
+    "name": "Diego Bodart",
+    "url": "https://github.com/HermeticOrmus"
+  },
+  "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "license": "MIT",
+  "keywords": [
+    "unity",
+    "unity6",
+    "csharp",
+    "dots",
+    "urp",
+    "addressables",
+    "gamedev"
+  ]
+}

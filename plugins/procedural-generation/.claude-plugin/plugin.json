@@ -1,0 +1,21 @@
+{
+  "name": "procedural-generation",
+  "version": "2.0.0",
+  "description": "Procedural generation: noise terrain, BSP and cellular automata dungeons, Wave Function Collapse, seeded randomness, and solvability checks.",
+  "author": {
+    "name": "Diego Bodart",
+    "url": "https://github.com/HermeticOrmus"
+  },
+  "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "license": "MIT",
+  "keywords": [
+    "procedural-generation",
+    "procgen",
+    "noise",
+    "wave-function-collapse",
+    "dungeons",
+    "roguelike",
+    "gamedev"
+  ]
+}

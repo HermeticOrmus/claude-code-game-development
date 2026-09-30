@@ -1,0 +1,22 @@
+{
+  "name": "performance-optimization",
+  "version": "2.0.0",
+  "description": "Game performance: profiling methodology, draw call batching, LODs, occlusion culling, object pooling, and GDScript hot path fixes.",
+  "author": {
+    "name": "Diego Bodart",
+    "url": "https://github.com/HermeticOrmus"
+  },
+  "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "license": "MIT",
+  "keywords": [
+    "performance",
+    "profiling",
+    "optimization",
+    "draw-calls",
+    "lod",
+    "pooling",
+    "godot",
+    "gamedev"
+  ]
+}

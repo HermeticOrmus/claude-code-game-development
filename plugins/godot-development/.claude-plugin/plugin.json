@@ -1,0 +1,21 @@
+{
+  "name": "godot-development",
+  "version": "2.0.0",
+  "description": "Godot 4 development: Node tree and scene design, signals, resources, physics, animation, typed GDScript or C#, GDExtension, and GUT tests.",
+  "author": {
+    "name": "Diego Bodart",
+    "url": "https://github.com/HermeticOrmus"
+  },
+  "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "license": "MIT",
+  "keywords": [
+    "godot",
+    "godot4",
+    "gdscript",
+    "csharp",
+    "gdextension",
+    "gut",
+    "gamedev"
+  ]
+}

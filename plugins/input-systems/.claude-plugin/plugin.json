@@ -1,0 +1,23 @@
+{
+  "name": "input-systems",
+  "version": "2.0.0",
+  "description": "Game input systems: action maps, gamepad deadzones, input buffering, rebinding, touch controls, and rumble across Godot, Unity, and Unreal.",
+  "author": {
+    "name": "Diego Bodart",
+    "url": "https://github.com/HermeticOrmus"
+  },
+  "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "license": "MIT",
+  "keywords": [
+    "input",
+    "controls",
+    "gamepad",
+    "rebinding",
+    "touch",
+    "godot",
+    "unity",
+    "unreal",
+    "gamedev"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "level-design",
+  "version": "2.0.0",
+  "description": "Level design and construction: greyboxing, TileMaps, modular kits, navmesh baking, level streaming, and environmental storytelling.",
+  "author": {
+    "name": "Diego Bodart",
+    "url": "https://github.com/HermeticOrmus"
+  },
+  "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "license": "MIT",
+  "keywords": [
+    "level-design",
+    "greybox",
+    "tilemap",
+    "navmesh",
+    "streaming",
+    "godot",
+    "unity",
+    "gamedev"
+  ]
+}

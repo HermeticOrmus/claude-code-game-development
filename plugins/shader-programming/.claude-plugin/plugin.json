@@ -1,0 +1,21 @@
+{
+  "name": "shader-programming",
+  "version": "2.0.0",
+  "description": "Real-time shaders for games: Godot shading language, vertex and fragment stages, common effects, post-processing, and shader performance.",
+  "author": {
+    "name": "Diego Bodart",
+    "url": "https://github.com/HermeticOrmus"
+  },
+  "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "license": "MIT",
+  "keywords": [
+    "shaders",
+    "glsl",
+    "godot-shaders",
+    "vfx",
+    "post-processing",
+    "rendering",
+    "gamedev"
+  ]
+}

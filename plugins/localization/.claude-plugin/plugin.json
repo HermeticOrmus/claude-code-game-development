@@ -1,0 +1,22 @@
+{
+  "name": "localization",
+  "version": "2.0.0",
+  "description": "Game localization: string extraction, gettext PO files, ICU plurals, right-to-left layout, CJK font fallback, and pseudo-localization.",
+  "author": {
+    "name": "Diego Bodart",
+    "url": "https://github.com/HermeticOrmus"
+  },
+  "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "license": "MIT",
+  "keywords": [
+    "localization",
+    "i18n",
+    "l10n",
+    "gettext",
+    "rtl",
+    "fonts",
+    "godot",
+    "gamedev"
+  ]
+}
