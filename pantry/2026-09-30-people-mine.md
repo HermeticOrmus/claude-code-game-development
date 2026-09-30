@@ -22,7 +22,7 @@ Repo read: [HermeticOrmus/claude-code-game-development](https://github.com/Herme
 ## Read log (what we read)
 
 - Repo metadata (GitHub API `repos/HermeticOrmus/claude-code-game-development`): 11 forks, Discussions on, 1 open issue. Stars are not feedback and are not counted here.
-- Issues and pull requests, all states (`issues?state=all`): #1 "Release v2.0.0" (closed), #2 "v2.0.0: rename marketplace, credit wshobson/agents, add 20 game plugins" (merged PR), #3 "Open the kitchen: pantry, Menu, contributor door" (open). All three by the maintainer, so no voices. No issue carries the `feedback` label yet.
+- Issues and pull requests, all states (`issues?state=all`): #1 "Release v2.0.0" (closed), #2 "v2.0.0: rename marketplace, credit wshobson/agents, add 20 game plugins" (merged PR), #3 "Open the kitchen: pantry, Menu, contributor door" (open). All three by the maintainer, so no voices. #4 "Add frontmatter to the 67 command files that lack it" (open, `good first issue`) was opened by the maintainer during this run; not a voice either. No issue carries the `feedback` label yet.
 - Issue comments (`issues/comments`): 1, by the maintainer on #1. No outside comments.
 - Pull request review comments (`pulls/comments`): none.
 - Discussions (GraphQL `discussions`): 0 threads. Categories exist: Announcements, General, Ideas, Polls, Q&A, Show and tell.
