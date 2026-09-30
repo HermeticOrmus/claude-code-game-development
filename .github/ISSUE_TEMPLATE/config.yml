@@ -1,12 +1,12 @@
 ---
 blank_issues_enabled: false
 contact_links:
-  - name: GitHub Discussions
-    url: https://github.com/wshobson/agents/discussions
-    about: For questions, brainstorming, and general discussions about subagents
+  - name: Feedback
+    url: https://github.com/HermeticOrmus/claude-code-game-development/issues/new?template=feedback.yml
+    about: Tell us what you are building, what worked, and what is missing
   - name: Community Guidelines
-    url: https://github.com/wshobson/agents/blob/main/.github/CODE_OF_CONDUCT.md
+    url: https://github.com/HermeticOrmus/claude-code-game-development/blob/main/CODE_OF_CONDUCT.md
     about: Read our Code of Conduct and community standards
   - name: Contributing Guide
-    url: https://github.com/wshobson/agents/blob/main/.github/CONTRIBUTING.md
+    url: https://github.com/HermeticOrmus/claude-code-game-development/blob/main/CONTRIBUTING.md
     about: Learn how to contribute effectively to this project
