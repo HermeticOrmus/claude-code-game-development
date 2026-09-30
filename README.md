@@ -5,7 +5,7 @@
 <h1 align="center">Claude Code Game Dev</h1>
 
 <p align="center">
-  <em>Game development patterns and workflows for Claude Code</em>
+  <em>Game development for Claude Code — 87 installable plugins (22 for games), an 80-chapter game dev manual, and a meta-prompting toolkit</em>
 </p>
 
 <p align="center">
@@ -15,6 +15,8 @@
   <img src="https://img.shields.io/badge/Python-aa8142?style=flat-square&logo=python&logoColor=white" alt="Python" />
   <img src="https://img.shields.io/badge/Claude Code-aa8142?style=flat-square&logo=anthropic&logoColor=white" alt="Claude Code" />
 </p>
+
+> **v2.0.0:** the plugin marketplace is now named `claude-code-game-development` and ships 20 game plugins from [LibreGameDev](https://github.com/HermeticOrmus/LibreGameDev-Claude-Code) plus optional hooks: Godot, Unity, Unreal, rendering, AI, netcode, playtesting, shipping. Upgrading from 1.x? Read [Migrating from 1.x](#migrating-from-1x).
 
 ---
 ```
@@ -38,7 +40,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Documentation](https://img.shields.io/badge/docs-comprehensive-blue.svg)](#documentation)
-[![Games](https://img.shields.io/badge/examples-10%2B%20games-orange.svg)](#example-games)
+[![Plugins](https://img.shields.io/badge/plugins-87-orange.svg)](#game-plugins)
 
 ---
 
@@ -47,11 +49,14 @@
 - [Introduction](#introduction)
 - [What You'll Learn](#what-youll-learn)
 - [Quick Start](#quick-start)
+- [Game Plugins](#game-plugins)
+- [Migrating from 1.x](#migrating-from-1x)
 - [Repository Structure](#repository-structure)
 - [Example Games](#example-games)
 - [Documentation](#documentation)
 - [Learning Paths](#learning-paths)
 - [Technology Stack](#technology-stack)
+- [Feedback](#feedback)
 - [Contributing](#contributing)
 - [Community](#community)
 - [FAQ](#faq)
@@ -95,9 +100,9 @@ Traditional game development requires manually writing thousands of lines of cod
 
 Despite Claude Code's power, game developers face a learning curve understanding how to effectively use AI assistance for game development workflows. This repository solves that problem by providing:
 
-1. **Complete Working Examples**: 10+ fully functional games from Pong to multiplayer shooters
-2. **Comprehensive Documentation**: 50,000+ words covering every aspect of game development with Claude Code
-3. **Prompt Engineering Library**: 100+ tested prompts specifically designed for game development tasks
+1. **Installable Claude Code Plugins**: 87 plugins, 22 of them for game development (Godot, Unity, Unreal, rendering, AI, netcode, playtesting, shipping)
+2. **Comprehensive Documentation**: 180,000+ words across 80 chapters covering every aspect of game development with Claude Code
+3. **Reusable Prompts**: exact Claude Code prompts throughout the docs, plus a meta-prompting framework in `tools/`
 4. **Production Patterns**: Advanced architectures used in real games
 5. **End-to-End Workflows**: From concept to deployment with AI assistance
 
@@ -198,6 +203,28 @@ By working through this repository, you'll master:
 
 ## Quick Start
 
+### Install the plugins from Claude Code
+
+```
+/plugin marketplace add HermeticOrmus/claude-code-game-development
+/plugin install godot-development@claude-code-game-development
+```
+
+Pick any other plugin by name from [Game Plugins](#game-plugins) and install it the same way. From a terminal:
+
+```bash
+claude plugin marketplace add HermeticOrmus/claude-code-game-development
+claude plugin install godot-development@claude-code-game-development
+```
+
+Optional hooks (engine detection at session start, a confirmation prompt before touching secrets or signing keys): `/plugin install libre-gamedev-hooks@claude-code-game-development`.
+
+From a checkout, `./setup.sh --only godot-development,multiplayer-networking` installs a chosen set, `./setup.sh --list` lists all 87, and `./setup.sh` with no flags installs every one. It needs the `claude` CLI and `jq`. Restart Claude Code after installing.
+
+Used 1.x, when this marketplace was named `claude-code-workflows`? Read [Migrating from 1.x](#migrating-from-1x) first.
+
+### Build your first game
+
 Get your first game running in **10 minutes**:
 
 ### Step 1: Install Claude Code
@@ -211,27 +238,19 @@ If you haven't already, install Claude Code following the official documentation
 ### Step 2: Clone This Repository
 
 ```bash
-git clone https://github.com/yourusername/claude-code-game-development.git
+git clone https://github.com/HermeticOrmus/claude-code-game-development.git
 cd claude-code-game-development
 ```
 
-### Step 3: Run Your First Game
+### Step 3: Build Your First Game
 
-```bash
-# Navigate to the Pong example
-cd examples/01-simple-games/pong
-
-# Open in your browser
-# Simply open index.html in any modern browser
-# Or use a local server:
-npx serve .
-```
+Follow [`docs/01-getting-started/first-game-in-10-minutes.md`](docs/01-getting-started/first-game-in-10-minutes.md). It builds Pong with Claude Code in a new, empty folder, starting from a single prompt, and runs in any modern browser.
 
 **You should see**: A fully functional Pong game with AI opponent, score tracking, and smooth gameplay.
 
 ### Step 4: Understanding What You Built
 
-Open `examples/01-simple-games/pong/PROMPTS.md` to see the exact Claude Code prompts used to build this game. The development process looked like this:
+The tutorial shows the exact Claude Code prompts. The development process looks like this:
 
 **Initial Prompt:**
 ```
@@ -260,12 +279,12 @@ Create a complete Pong game using HTML5 Canvas with:
 
 Now try building your own variation:
 
-1. Navigate to `templates/basic-game-template/`
-2. Copy the template to a new directory
-3. Open Claude Code and use this prompt:
+1. Create a new directory for your game
+2. Open Claude Code in it
+3. Use this prompt:
 
 ```
-Using the basic game template structure, create a [YOUR GAME IDEA] game with:
+Using the same structure as the Pong game (HTML5 Canvas and a game loop), create a [YOUR GAME IDEA] game with:
 - [Feature 1]
 - [Feature 2]
 - [Feature 3]
@@ -285,17 +304,194 @@ Using the basic game template structure, create a [YOUR GAME IDEA] game with:
 
 **Issue 3: Performance issues with many objects**
 - **Cause:** No spatial partitioning or culling
-- **Solution:** See `docs/10-performance-optimization/spatial-partitioning.md`
+- **Solution:** See `docs/09-advanced-patterns/spatial-partitioning.md`
 - **Claude Code Fix:** "Implement quadtree spatial partitioning to optimize collision checking"
 
 ### Next Steps
 
 After your first game, explore:
 
-1. **Simple Games** (`examples/01-simple-games/`): Build Snake, Breakout, Tetris, Flappy Bird, Asteroids
+1. **Simple Games**: Build Snake, Breakout, Tetris, Flappy Bird, or Asteroids next, from the specs in [Example Games](#example-games)
 2. **Core Concepts** (`docs/02-core-game-concepts/`): Deep dive into game development fundamentals
-3. **Prompt Library** (`prompts/`): Learn advanced prompt engineering for games
-4. **Intermediate Games** (`examples/02-intermediate-games/`): Tackle platformers, tower defense, roguelikes
+3. **Prompt Engineering** (`docs/01-getting-started/prompt-engineering-for-games.md`): Learn advanced prompt engineering for games
+4. **Game Plugins** ([Game Plugins](#game-plugins)): Install the engine and system plugins that fit your project, then tackle platformers, tower defense, roguelikes
+
+---
+
+## Game Plugins
+
+22 of the 87 plugins are for game development. 21 come from [LibreGameDev](https://github.com/HermeticOrmus/LibreGameDev-Claude-Code) and ship here at 2.0.0: 20 domain plugins, each with an agent, a slash command with focused actions, and a skill, plus an optional hooks plugin. The 22nd, `game-development`, comes from wshobson/agents. Install any of them with `/plugin install <plugin>@claude-code-game-development`.
+
+### Engines
+
+| Plugin | Agent | Command | Skill | What it covers |
+|---|---|---|---|---|
+| **godot-development** | `godot-engineer` | `/godot` | `godot-development` | Node tree and scene design, signals, resources, physics, animation, typed GDScript or C#, GDExtension, and GUT tests. |
+| **unity-development** | `unity-engineer` | `/unity` | `unity-development` | MonoBehaviour or DOTS architecture, URP and HDRP, Addressables, the Input System, ScriptableObjects, and idiomatic C#. |
+| **unreal-engine** | `unreal-developer` | `/unreal` | `unreal-patterns` | Gameplay Framework, Blueprint or C++, the Gameplay Ability System, Enhanced Input, replication, and Lumen and Nanite. |
+
+### Core systems
+
+| Plugin | Agent | Command | Skill | What it covers |
+|---|---|---|---|---|
+| **game-architecture** | `game-architect` | `/game-arch` | `game-arch-patterns` | Game loops, ECS, event buses, data resources, service locators, scene management, and state stacks. |
+| **input-systems** | `input-engineer` | `/input-system` | `input-patterns` | Action maps, gamepad deadzones, input buffering, rebinding, touch controls, and rumble across Godot, Unity, and Unreal. |
+| **save-systems** | `save-system-engineer` | `/save-system` | `save-system-patterns` | Serialization, save file versioning and migration, atomic writes, slots, settings persistence, and platform cloud saves. |
+| **localization** | `localization-engineer` | `/localize` | `localization-patterns` | String extraction, gettext PO files, ICU plurals, right-to-left layout, CJK font fallback, and pseudo-localization. |
+
+### Rendering + audio
+
+| Plugin | Agent | Command | Skill | What it covers |
+|---|---|---|---|---|
+| **shader-programming** | `shader-programmer` | `/shader` | `shader-patterns` | Godot shading language, vertex and fragment stages, common effects, post-processing, and shader performance. |
+| **animation-systems** | `animation-engineer` | `/animate` | `animation-patterns` | Blend trees, state machines, IK, root motion, and animation events across Godot AnimationTree, Unity Animator, and Unreal AnimGraph. |
+| **audio-systems** | `game-audio-engineer` | `/game-audio` | `audio-patterns` | Bus architecture, spatial audio, dynamic music, sound pooling, and FMOD or Wwise integration. |
+| **ui-game-design** | `game-ui-designer` | `/game-ui` | `game-ui-patterns` | HUDs, menu stacks, inventory grids, dialogue boxes, settings screens, and accessibility with Godot Control nodes. |
+
+### Gameplay
+
+| Plugin | Agent | Command | Skill | What it covers |
+|---|---|---|---|---|
+| **ai-game-behavior** | `game-ai-engineer` | `/game-ai` | `game-ai-patterns` | Behavior trees, state machines, utility AI, GOAP, navmesh pathfinding, and perception systems. |
+| **physics-simulation** | `physics-engineer` | `/physics` | `physics-patterns` | Body types, collision layers, character controllers, raycasts, triggers, joints, and physics performance in Godot and Unity. |
+| **procedural-generation** | `procgen-engineer` | `/procgen` | `procgen-patterns` | Noise terrain, BSP and cellular automata dungeons, Wave Function Collapse, seeded randomness, and solvability checks. |
+| **level-design** | `level-designer` | `/level-design` | `level-design-patterns` | Greyboxing, TileMaps, modular kits, navmesh baking, level streaming, and environmental storytelling. |
+
+### Quality + ops
+
+| Plugin | Agent | Command | Skill | What it covers |
+|---|---|---|---|---|
+| **playtesting** | `playtest-coordinator` | `/playtest` | `playtest-patterns` | Session design, observation protocols, telemetry schemas, death heatmaps, funnels, and A/B tests. |
+| **performance-optimization** | `game-perf-engineer` | `/game-perf` | `game-perf-patterns` | Profiling methodology, draw call batching, LODs, occlusion culling, object pooling, and GDScript hot path fixes. |
+| **asset-pipelines** | `asset-pipeline-engineer` | `/assets` | `asset-pipeline-patterns` | Import settings, texture atlasing, LOD generation, audio compression, and CI asset validation for Godot and Unity. |
+| **multiplayer-networking** | `network-engineer` | `/multiplayer` | `multiplayer-networking` | Rollback, lockstep, client prediction with reconciliation, lag compensation, bandwidth budgets, NAT traversal, and Godot or Unity networking. |
+| **monetization-ethics** | `monetization-advisor` | `/monetize` | `ethical-monetization-patterns` | Dark pattern audits, cosmetics-only stores, fair battle passes, platform IAP flows, and player spending protection. |
+
+### Hooks
+
+| Plugin | Events | What it does |
+|---|---|---|
+| **libre-gamedev-hooks** | `SessionStart`, `PreToolUse`, `PostToolUse` | Prints one line of context when the project is Godot, Unity, Unreal, or a web game; asks before a tool touches `.env` files, keys, Android keystores, or Godot export credentials, and before `rm -rf` or force pushes; flags empty writes and reminds once per session to run the tests. See [its README](plugins/libre-gamedev-hooks/README.md). |
+
+### From wshobson/agents
+
+| Plugin | Agents | What it covers |
+|---|---|---|
+| **game-development** | `unity-developer`, `minecraft-bukkit-pro` | Unity game development with C# scripting, Minecraft server plugin development with Bukkit/Spigot APIs |
+
+`game-development` and `unity-development` are different plugins: `game-development` carries a general Unity C# agent and a Minecraft Bukkit/Spigot plugin agent, while `unity-development` is the Unity 6 architecture plugin with its own agent, command, and skill.
+
+The skills cross-reference the [reference manual](docs/), which lives in this repo.
+
+### The other 65 plugins
+
+The rest of the catalog covers general software work (backend, frontend, testing, security, infrastructure, data, languages, and more). These plugins come from [wshobson/agents](https://github.com/wshobson/agents) by Seth Hobson and are unchanged apart from their manifests; see [NOTICE.md](NOTICE.md).
+
+<details>
+<summary>All 65, by category</summary>
+
+| Plugin | Category | Agents | Commands | Skills | Description |
+|---|---|---|---|---|---|
+| `accessibility-compliance` | accessibility | 1 | 1 | 0 | WCAG accessibility auditing, compliance validation, UI testing for screen readers, keyboard navigation, and inclusive design |
+| `agent-orchestration` | ai-ml | 1 | 2 | 0 | Multi-agent system optimization, agent improvement workflows, and context management |
+| `context-management` | ai-ml | 1 | 2 | 0 | Context persistence, restoration, and long-running conversation management |
+| `llm-application-dev` | ai-ml | 2 | 3 | 4 | LLM application development, prompt engineering, and AI assistant optimization |
+| `machine-learning-ops` | ai-ml | 3 | 1 | 1 | ML model training pipelines, hyperparameter tuning, model deployment automation, experiment tracking, and MLOps workflows |
+| `api-scaffolding` | api | 4 | 0 | 1 | REST and GraphQL API scaffolding, framework selection, backend architecture, and API generation |
+| `api-testing-observability` | api | 1 | 1 | 0 | API testing automation, request mocking, OpenAPI documentation generation, observability setup, and monitoring |
+| `blockchain-web3` | blockchain | 1 | 0 | 4 | Smart contract development with Solidity, DeFi protocol implementation, NFT platforms, and Web3 application architecture |
+| `business-analytics` | business | 1 | 0 | 0 | Business metrics analysis, KPI tracking, financial reporting, and data-driven decision making |
+| `customer-sales-automation` | business | 2 | 0 | 0 | Customer support workflow automation, sales pipeline management, email campaigns, and CRM integration |
+| `hr-legal-compliance` | business | 2 | 0 | 0 | HR policy documentation, legal compliance templates (GDPR/SOC2/HIPAA), employment contracts, and regulatory documentation |
+| `data-engineering` | data | 2 | 2 | 0 | ETL pipeline construction, data warehouse design, batch processing workflows, and data-driven feature development |
+| `data-validation-suite` | data | 1 | 0 | 0 | Schema validation, data quality monitoring, streaming validation pipelines, and input validation for backend APIs |
+| `database-design` | database | 2 | 0 | 1 | Database architecture, schema design, and SQL optimization for production systems |
+| `database-migrations` | database | 2 | 2 | 0 | Database migration automation, observability, and cross-database migration strategies |
+| `backend-development` | development | 4 | 1 | 5 | Backend API design, GraphQL architecture, workflow orchestration with Temporal, and test-driven backend development |
+| `debugging-toolkit` | development | 2 | 1 | 0 | Interactive debugging, developer experience optimization, and smart debugging workflows |
+| `developer-essentials` | development | 0 | 0 | 8 | Essential developer skills including Git workflows, SQL optimization, error handling, code review, E2E testing, authentication, debugging, and monorepo management |
+| `frontend-mobile-development` | development | 2 | 1 | 0 | Frontend UI development and mobile application implementation across platforms |
+| `multi-platform-apps` | development | 6 | 1 | 0 | Cross-platform application development coordinating web, iOS, Android, and desktop implementations |
+| `code-documentation` | documentation | 3 | 2 | 0 | Documentation generation, code explanation, and technical writing with automated doc generation and tutorial creation |
+| `documentation-generation` | documentation | 5 | 1 | 0 | OpenAPI specification generation, Mermaid diagram creation, tutorial writing, API reference documentation |
+| `quantitative-trading` | finance | 2 | 0 | 0 | Quantitative analysis, algorithmic trading strategies, financial modeling, portfolio risk management, and backtesting |
+| `cicd-automation` | infrastructure | 5 | 1 | 4 | CI/CD pipeline configuration, GitHub Actions/GitLab CI workflow setup, and automated deployment pipeline orchestration |
+| `cloud-infrastructure` | infrastructure | 6 | 0 | 4 | Cloud architecture design for AWS/Azure/GCP, Kubernetes cluster configuration, Terraform infrastructure-as-code, hybrid cloud networking, and multi-cloud cost optimization |
+| `deployment-strategies` | infrastructure | 2 | 0 | 0 | Deployment patterns, rollback automation, and infrastructure templates |
+| `deployment-validation` | infrastructure | 1 | 1 | 0 | Pre-deployment checks, configuration validation, and deployment readiness assessment |
+| `kubernetes-operations` | infrastructure | 1 | 0 | 4 | Kubernetes manifest generation, networking configuration, security policies, observability setup, GitOps workflows, and auto-scaling |
+| `arm-cortex-microcontrollers` | languages | 1 | 0 | 0 | ARM Cortex-M firmware development for Teensy, STM32, nRF52, and SAMD with peripheral drivers and memory safety patterns |
+| `functional-programming` | languages | 1 | 0 | 0 | Functional programming with Elixir, OTP patterns, Phoenix framework, and distributed systems |
+| `javascript-typescript` | languages | 2 | 1 | 4 | JavaScript and TypeScript development with ES6+, Node.js, React, and modern web frameworks |
+| `julia-development` | languages | 1 | 0 | 0 | Modern Julia development with Julia 1.10+, package management, scientific computing, high-performance numerical code, and production best practices |
+| `jvm-languages` | languages | 3 | 0 | 0 | JVM language development including Java, Scala, and C# with enterprise patterns and frameworks |
+| `python-development` | languages | 3 | 1 | 5 | Modern Python development with Python 3.12+, Django, FastAPI, async patterns, and production best practices |
+| `shell-scripting` | languages | 2 | 0 | 3 | Production-grade Bash scripting with defensive programming, POSIX compliance, and comprehensive testing |
+| `systems-programming` | languages | 4 | 1 | 0 | Systems programming with Rust, Go, C, and C++ for performance-critical and low-level development |
+| `web-scripting` | languages | 2 | 0 | 0 | Web scripting with PHP and Ruby for web applications, CMS development, and backend services |
+| `content-marketing` | marketing | 2 | 0 | 0 | Content marketing strategy, web research, and information synthesis for marketing operations |
+| `seo-analysis-monitoring` | marketing | 3 | 0 | 0 | Content freshness analysis, cannibalization detection, and authority building for SEO |
+| `seo-content-creation` | marketing | 3 | 0 | 0 | SEO content writing, planning, and quality auditing with E-E-A-T optimization |
+| `seo-technical-optimization` | marketing | 4 | 0 | 0 | Technical SEO optimization including meta tags, keywords, structure, and featured snippets |
+| `codebase-cleanup` | modernization | 2 | 3 | 0 | Technical debt reduction, dependency updates, and code refactoring automation |
+| `framework-migration` | modernization | 2 | 3 | 4 | Framework updates, migration planning, and architectural transformation workflows |
+| `distributed-debugging` | operations | 2 | 1 | 0 | Distributed system tracing and debugging across microservices |
+| `error-diagnostics` | operations | 2 | 3 | 0 | Error tracing, root cause analysis, and smart debugging for production systems |
+| `incident-response` | operations | 2 | 2 | 0 | Production incident management, triage workflows, and automated incident resolution |
+| `observability-monitoring` | operations | 4 | 2 | 4 | Metrics collection, logging infrastructure, distributed tracing, SLO implementation, and monitoring dashboards |
+| `payment-processing` | payments | 1 | 0 | 4 | Payment gateway integration with Stripe, PayPal, checkout flow implementation, subscription billing, and PCI compliance |
+| `application-performance` | performance | 3 | 1 | 0 | Application profiling, performance optimization, and observability for frontend and backend systems |
+| `database-cloud-optimization` | performance | 4 | 1 | 0 | Database query optimization, cloud cost optimization, and scalability improvements |
+| `code-review-ai` | quality | 1 | 1 | 0 | AI-powered architectural review and code quality analysis |
+| `comprehensive-review` | quality | 3 | 2 | 0 | Multi-perspective code analysis covering architecture, security, and best practices |
+| `performance-testing-review` | quality | 2 | 2 | 0 | Performance analysis, test coverage review, and AI-powered code quality assessment |
+| `backend-api-security` | security | 2 | 0 | 0 | API security hardening, authentication implementation, authorization patterns, rate limiting, and input validation |
+| `frontend-mobile-security` | security | 3 | 1 | 0 | XSS prevention, CSRF protection, content security policies, mobile app security, and secure storage patterns |
+| `security-compliance` | security | 1 | 1 | 0 | SOC2, HIPAA, and GDPR compliance validation, secrets scanning, compliance checklists, and regulatory documentation |
+| `security-scanning` | security | 1 | 3 | 1 | SAST analysis, dependency vulnerability scanning, OWASP Top 10 compliance, container security scanning, and automated security hardening |
+| `unit-testing` | testing | 2 | 1 | 0 | Unit and integration test automation for Python and JavaScript with debugging support |
+| `code-refactoring` | utilities | 2 | 3 | 0 | Code cleanup, refactoring automation, and technical debt management with context restoration |
+| `dependency-management` | utilities | 1 | 1 | 0 | Dependency auditing, version management, and security vulnerability scanning |
+| `error-debugging` | utilities | 2 | 3 | 0 | Error analysis, trace debugging, and multi-agent problem diagnosis |
+| `team-collaboration` | utilities | 1 | 2 | 0 | Team workflows, issue management, standup automation, and developer experience optimization |
+| `full-stack-orchestration` | workflows | 4 | 1 | 0 | End-to-end feature orchestration with testing, security, performance, and deployment |
+| `git-pr-workflows` | workflows | 1 | 3 | 0 | Git workflow automation, pull request enhancement, and team onboarding processes |
+| `tdd-workflows` | workflows | 2 | 4 | 0 | Test-driven development methodology with red-green-refactor cycles and code review |
+
+</details>
+
+Across all 87 plugins: 168 agents, 90 commands, 81 skills, and 3 hooks. Some wshobson/agents agents appear in more than one plugin, so the agent count includes those copies.
+
+---
+
+## Migrating from 1.x
+
+In 1.x this marketplace was named `claude-code-workflows`, the same name that [wshobson/agents](https://github.com/wshobson/agents) uses. Claude Code keeps one marketplace per name, so only one of the two could be added: adding the second from GitHub fails with "its network source differs from the one declared for it". v2.0.0 renames this one to `claude-code-game-development`, so both can be installed side by side.
+
+1. Check which repo `claude-code-workflows` points to:
+
+   ```
+   /plugin marketplace list
+   ```
+
+   or `claude plugin marketplace list` in a terminal. Read the `Source:` line under `claude-code-workflows`.
+
+2. **Only if** it says `GitHub (HermeticOrmus/claude-code-game-development)` (or a local checkout of this repo), remove it from a terminal:
+
+   ```bash
+   claude plugin marketplace remove claude-code-workflows
+   ```
+
+   This also uninstalls the plugins you installed from it. If it says `GitHub (wshobson/agents)`, leave it alone: that is Seth Hobson's marketplace, and removing it would remove his plugins.
+
+3. Add this repo under its new name and reinstall what you use:
+
+   ```
+   /plugin marketplace add HermeticOrmus/claude-code-game-development
+   /plugin install <plugin>@claude-code-game-development
+   ```
+
+The 66 plugins that came from wshobson/agents keep their names and versions here, so the ones you used before are still available.
 
 ---
 
@@ -303,11 +499,15 @@ After your first game, explore:
 
 This repository is organized for progressive learning and easy reference:
 
-### `/docs` - Comprehensive Documentation (50,000+ words)
+### `/plugins` and `/.claude-plugin` - Claude Code Plugins
+
+`.claude-plugin/marketplace.json` makes the repo the `claude-code-game-development` plugin marketplace. `plugins/` holds the 87 plugins it lists: the 21 game plugins from LibreGameDev and the 66 plugins from wshobson/agents. See [Game Plugins](#game-plugins). `setup.sh` installs them from a checkout.
+
+### `/docs` - Comprehensive Documentation (180,000+ words)
 
 Thirteen major sections covering every aspect of game development with Claude Code:
 
-#### 01. Getting Started (10,000+ words)
+#### 01. Getting Started (17,000+ words)
 Your introduction to Claude Code for game development. Covers installation, setup, fundamental concepts, prompt engineering basics, and troubleshooting. Perfect starting point for beginners.
 
 **Key Files:**
@@ -317,7 +517,7 @@ Your introduction to Claude Code for game development. Covers installation, setu
 - `prompt-engineering-for-games.md` - Game-specific prompting strategies
 - `troubleshooting-common-issues.md` - Solutions to frequent problems
 
-#### 02. Core Game Concepts (14,000+ words)
+#### 02. Core Game Concepts (28,000+ words)
 Essential game development knowledge with Claude Code implementations. Master game loops, state management, input handling, collision detection, physics, animation, and camera systems.
 
 **Key Files:**
@@ -327,7 +527,7 @@ Essential game development knowledge with Claude Code implementations. Master ga
 - `physics-integration.md` - 2D/3D physics systems
 - `animation-systems.md` - Sprite, skeletal, and procedural animation
 
-#### 03. Graphics and Rendering (14,000+ words)
+#### 03. Graphics and Rendering (21,000+ words)
 Deep dive into 2D and 3D rendering. Learn Canvas 2D, WebGL, shader programming, particle systems, sprite management, lighting, and post-processing effects.
 
 **Key Files:**
@@ -337,7 +537,7 @@ Deep dive into 2D and 3D rendering. Learn Canvas 2D, WebGL, shader programming, 
 - `particle-systems.md` - Visual effects and optimization
 - `lighting-shadows.md` - Lighting systems for games
 
-#### 04. Game AI (12,000+ words)
+#### 04. Game AI (25,000+ words)
 Implement intelligent game behaviors. Covers pathfinding, behavior trees, finite state machines, procedural generation, NPC behaviors, and adaptive difficulty.
 
 **Key Files:**
@@ -346,7 +546,7 @@ Implement intelligent game behaviors. Covers pathfinding, behavior trees, finite
 - `procedural-generation.md` - Generating levels and content
 - `npc-behaviors.md` - Realistic character AI
 
-#### 05. Audio Systems (8,000+ words)
+#### 05. Audio Systems (12,000+ words)
 Complete audio implementation guide. Web Audio API, spatial audio, dynamic music systems, sound effect management, and performance optimization.
 
 #### 06. Networking and Multiplayer (12,000+ words)
@@ -357,28 +557,32 @@ Build real-time multiplayer games. WebSocket implementation, client-server archi
 - `state-synchronization.md` - Network state management
 - `lag-compensation.md` - Client prediction and reconciliation
 
-#### 07. UI/UX (10,000+ words)
+#### 07. UI/UX (5,000+ words)
 Create polished game interfaces. Menu systems, HUD design, dialogue systems, inventory interfaces, and accessibility considerations.
 
-#### 08. Game Engines (12,000+ words)
+#### 08. Game Engines (15,000+ words)
 Integrate Claude Code with popular game engines. Phaser, Babylon.js, Three.js, PixiJS workflows, and custom engine development.
 
-#### 09. Advanced Patterns (12,000+ words)
+#### 09. Advanced Patterns (13,000+ words)
 Production-quality architectures. Entity Component Systems, dependency injection, event-driven architecture, object pooling, spatial partitioning, and save/load systems.
 
-#### 10. Performance Optimization (12,000+ words)
+#### 10. Performance Optimization (6,000+ words)
 Make your games run fast. Profiling, rendering optimization, memory management, asset loading strategies, Web Worker parallelism, and mobile optimization.
 
-#### 11. Testing and QA (8,000+ words)
+#### 11. Testing and QA (11,000+ words)
 Ensure game quality. Unit testing game logic, integration testing, automated playtesting, and CI/CD pipelines.
 
 #### 12. Deployment and Distribution (10,000+ words)
 Ship your games. Web hosting, mobile packaging (PWA, Cordova, Capacitor), desktop deployment (Electron, Tauri), monetization strategies, and analytics.
 
-#### 13. Case Studies (16,000+ words)
-Real-world development stories. Complete breakdowns of platformer, puzzle, multiplayer shooter, and procedural RPG development processes from concept to deployment.
+#### 13. Case Studies (1,000+ words)
+Real-world development stories. The section README outlines four case studies (platformer, puzzle, multiplayer shooter, procedural RPG) from concept to deployment; the full write-ups are not in the repository yet.
 
-### `/examples` - 10+ Complete Working Games
+### Described here, not in the repository yet
+
+The README has described the directories below since the first release, but they have not been added: there is no `examples/`, `templates/`, `prompts/`, `resources/`, or `community/` directory, and `tools/` holds the meta-prompting framework rather than the JavaScript utilities listed. They stay here as the plan, and each is a good first contribution (see [Contributing](#contributing)). What ships today is `plugins/`, `docs/`, and `tools/meta-prompting-framework/`.
+
+### `/examples` - 10+ Complete Working Games (not added yet)
 
 #### Simple Games (`01-simple-games/`)
 Six complete games perfect for learning fundamentals:
@@ -432,7 +636,7 @@ Reusable systems you can integrate into your games:
 - Crafting system
 - Skill tree system
 
-### `/templates` - Project Templates
+### `/templates` - Project Templates (not added yet)
 
 Five ready-to-use templates:
 - **basic-game-template**: Minimal structure for quick prototypes
@@ -447,7 +651,7 @@ Each template includes:
 - README with Claude Code usage guide
 - Example game demonstrating the template
 
-### `/prompts` - Prompt Engineering Library
+### `/prompts` - Prompt Engineering Library (not added yet)
 
 **100+ tested prompts** organized by category:
 
@@ -467,20 +671,22 @@ Each prompt includes:
 
 ### `/tools` - Development Utilities
 
-Helper tools for game development with Claude Code:
+What is in `tools/` today: the [meta-prompting framework](tools/README.md) (`tools/meta-prompting-framework/`), a recursive prompt improvement system that calls the Claude API. It comes from [manutej/meta-prompting-framework](https://github.com/manutej/meta-prompting-framework) and carries its own MIT license.
+
+Planned helper tools for game development with Claude Code (not added yet):
 - **game-project-analyzer.js**: Analyze your game's structure and complexity
 - **asset-optimizer.js**: Optimize images, audio, and other assets
 - **performance-monitor.js**: Real-time performance overlay
 - **debug-overlay.js**: Visual debugging tools
 - **build-scripts/**: Automated build and deployment scripts
 
-### `/resources` - Reference Materials
+### `/resources` - Reference Materials (not added yet)
 
 - **cheat-sheets/**: Quick reference for Claude Code commands and patterns
 - **reference/**: Math, physics, algorithms for game development
 - **learning-paths/**: Structured 30/60/90-day curricula
 
-### `/community` - Community Resources
+### `/community` - Community Resources (not added yet)
 
 - **showcase/**: Template for sharing your projects
 - **discussions/**: Common questions and answers
@@ -491,6 +697,8 @@ Helper tools for game development with Claude Code:
 ## Example Games
 
 Explore 10+ complete, working games ranging from simple classics to complex multiplayer experiences:
+
+> **Not in the repository yet.** The games below are specs: each one lists what to build and which techniques it teaches, and the `Try It` paths show where each game will live once it is added. You can build any of them today with Claude Code, the docs, and the game plugins. Pong is the exception: [`docs/01-getting-started/first-game-in-10-minutes.md`](docs/01-getting-started/first-game-in-10-minutes.md) builds it step by step.
 
 ### Simple Games - Perfect for Learning
 
@@ -638,7 +846,7 @@ Complete multiplayer game with:
 
 ## Documentation
 
-The documentation is organized into 13 comprehensive sections with 50,000+ words covering every aspect of game development with Claude Code. Each document includes:
+The documentation is organized into 13 comprehensive sections with 180,000+ words across 80 files, covering every aspect of game development with Claude Code. Each document includes:
 
 - Theoretical background explaining why concepts matter
 - Claude Code-specific guidance and prompts
@@ -860,6 +1068,12 @@ This repository focuses on web-based game development using modern JavaScript/Ty
 
 ---
 
+## Feedback
+
+Starred this? Tell us what worked and what is missing: [open a feedback issue](https://github.com/HermeticOrmus/claude-code-game-development/issues/new?template=feedback.yml). Every piece of feedback gets an answer, and changes that come from it are credited in the release notes.
+
+---
+
 ## Contributing
 
 This repository thrives on community contributions! Whether you're adding a new game example, improving documentation, or fixing bugs, your contributions are welcome.
@@ -936,7 +1150,7 @@ Join the growing community of developers building games with Claude Code:
 
 ### Get Help
 
-- **GitHub Discussions**: Ask questions, share projects, discuss ideas
+- **Feedback**: [Open a feedback issue](https://github.com/HermeticOrmus/claude-code-game-development/issues/new?template=feedback.yml) to ask questions, share projects, or say what is missing
 - **Issues**: Report bugs or request features
 - **Discord**: Real-time chat with other developers (link coming soon)
 
@@ -944,9 +1158,9 @@ Join the growing community of developers building games with Claude Code:
 
 Built something cool with this resource? We'd love to see it!
 
-1. Add your project to `community/showcase/`
+1. [Open a feedback issue](https://github.com/HermeticOrmus/claude-code-game-development/issues/new?template=feedback.yml) about your project
 2. Include screenshots, description, and link
-3. Submit a pull request
+3. Or submit a pull request that adds it to this README
 4. Get featured in our community highlights!
 
 ### Community Guidelines
@@ -987,7 +1201,7 @@ A: Yes! This repository is MIT licensed, meaning you can use the code for any pu
 A: The simple and intermediate examples are great learning tools but would need polish for commercial release. The advanced examples demonstrate production-quality patterns and could be used as foundations for commercial games with additional development.
 
 **Q: What if I get stuck?**
-A: Check the troubleshooting guides in each section, search GitHub Discussions for similar issues, or ask a question in Discussions. The community is here to help!
+A: Check the troubleshooting guides in each section, search the issues for similar problems, or open a feedback issue. The community is here to help!
 
 ### About Game Development
 
@@ -995,7 +1209,7 @@ A: Check the troubleshooting guides in each section, search GitHub Discussions f
 A: Yes! The repository includes 3D game development with Three.js and Babylon.js. See `docs/08-game-engines/` for details.
 
 **Q: Can I build multiplayer games?**
-A: Absolutely! The repository includes complete multiplayer examples. See `examples/03-advanced-games/multiplayer-shooter/` and `docs/06-networking-multiplayer/`.
+A: Absolutely! See `docs/06-networking-multiplayer/` for WebSocket games, and the `multiplayer-networking` plugin for rollback, lockstep, client prediction, and lag compensation in Godot and Unity.
 
 **Q: What about mobile games?**
 A: All games can be deployed to mobile via PWA, Capacitor, or Cordova. See `docs/12-deployment-distribution/mobile-packaging.md`.
@@ -1021,7 +1235,7 @@ A: Simple games use programmatic graphics (shapes, particles). For production ga
 
 ## License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details. The 66 plugins derived from wshobson/agents are Copyright (c) 2024 Seth Hobson, also under the MIT License; [NOTICE.md](NOTICE.md) lists them with the upstream notice.
 
 **What this means**:
 - Use this code for any purpose (personal, educational, commercial)
@@ -1036,6 +1250,8 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 This repository was created to empower game developers and advance the field of AI-assisted development.
 
 **Special Thanks To**:
+- **[Seth Hobson](https://github.com/wshobson)** for [wshobson/agents](https://github.com/wshobson/agents), the MIT-licensed collection that 66 of the plugins here come from (see [NOTICE.md](NOTICE.md))
+- **[manutej](https://github.com/manutej)** for the [meta-prompting framework](https://github.com/manutej/meta-prompting-framework) in `tools/`
 - **Anthropic** for creating Claude Code and pushing the boundaries of AI-assisted development
 - **The Game Development Community** for decades of knowledge sharing and open-source contributions
 - **All Contributors** who help improve this resource
@@ -1049,10 +1265,11 @@ Ready to start building games with Claude Code?
 
 1. **Complete the Quick Start** above
 2. **Choose your learning path** based on your experience level
-3. **Build the example games** to learn concepts hands-on
-4. **Create your own game** using the templates and prompts
-5. **Share your creation** with the community
-6. **Contribute back** to help other developers
+3. **Install the game plugins** that fit your engine and systems
+4. **Build the example games** from their specs to learn concepts hands-on
+5. **Create your own game** using the docs and prompts
+6. **Share your creation** with the community
+7. **Contribute back** to help other developers
 
 **The future of game development is here. Let's build it together.**
 
@@ -1065,10 +1282,9 @@ Ready to start building games with Claude Code?
 ---
 
 **Repository Statistics:**
-- 50,000+ words of documentation
-- 10+ complete game examples
-- 100+ tested Claude Code prompts
-- 5 project templates
+- 87 Claude Code plugins (22 for games): 168 agents, 90 commands, 81 skills, 3 hooks
+- 180,000+ words of documentation across 80 files
+- A meta-prompting framework in `tools/`
 - Comprehensive learning paths
 - Production-ready patterns
 
@@ -1095,7 +1311,7 @@ This repository is part of a growing family of open-source toolkits for Claude C
 - [LibreEmbed-Claude-Code](https://github.com/HermeticOrmus/LibreEmbed-Claude-Code) — Embedded systems, firmware, and IoT development
 - [LibreFinTech-Claude-Code](https://github.com/HermeticOrmus/LibreFinTech-Claude-Code) — Financial technology development
 - [LibreGEO-Claude-Code](https://github.com/HermeticOrmus/LibreGEO-Claude-Code) — AI-search optimization (ChatGPT, Perplexity, Gemini, Google AI Overviews)
-- [LibreGameDev-Claude-Code](https://github.com/HermeticOrmus/LibreGameDev-Claude-Code) — Game development across Godot, Unity, Unreal
+- [LibreGameDev-Claude-Code](https://github.com/HermeticOrmus/LibreGameDev-Claude-Code) — Game development across Godot, Unity, Unreal (its plugins now ship here)
 - [LibreMLOps-Claude-Code](https://github.com/HermeticOrmus/LibreMLOps-Claude-Code) — ML engineering and AI operations
 - [LibreMobileDev-Claude-Code](https://github.com/HermeticOrmus/LibreMobileDev-Claude-Code) — Mobile app development (Flutter, React Native, native iOS, native Android)
 - [LibreSecOps-Claude-Code](https://github.com/HermeticOrmus/LibreSecOps-Claude-Code) — Security operations
