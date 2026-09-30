@@ -2,8 +2,74 @@
 
 Thank you for your interest in contributing to this project! This repository is a community-driven resource that helps game developers learn and master AI-assisted game development with Claude Code. Your contributions make this resource better for everyone.
 
+## Ways to contribute
+
+### Take a Menu item
+
+The [Menu](pantry/MENU.md) is the ordered list of work that is ready to build. It comes from the [pantry](pantry/README.md): a competitor map, posts on X, and what people say in this repo, each row with its source. Every item has a Done-when that anyone can check.
+
+- Open Menu issues: [the `menu` label](https://github.com/HermeticOrmus/claude-code-game-development/issues?q=is%3Aopen+label%3Amenu)
+- Good first issues: [github.com/HermeticOrmus/claude-code-game-development/contribute](https://github.com/HermeticOrmus/claude-code-game-development/contribute)
+
+Claim an item by commenting on its issue, then open a pull request whose description says `Closes #N`.
+
+### Report or fix a routing miss
+
+Claude picks an agent, skill or command by its `description:` line. If it picked the wrong one, or none, open a [routing miss](https://github.com/HermeticOrmus/claude-code-game-development/issues/new?template=routing-miss.yml). For example: a Unity 6 DOTS question answered by the general `game-development:unity-developer` agent when `unity-development:unity-engineer` was the one you wanted. The fix is usually one sharper description, which makes it a good first pull request.
+
+### Propose or build a plugin
+
+Open a [plugin proposal](https://github.com/HermeticOrmus/claude-code-game-development/issues/new?template=plugin-proposal.yml) if you want a second opinion first, or build it and open a pull request. A game plugin here uses this layout, with [`plugins/godot-development/`](plugins/godot-development/) as the model:
+
+```text
+plugins/<name>/
+  .claude-plugin/plugin.json    name, version, description, author, license, keywords
+  agents/<agent>.md             frontmatter: name, description ("Use this agent when ..."), model: inherit
+  commands/<command>.md         frontmatter: description, argument-hint
+  skills/<skill>/SKILL.md       frontmatter: name, description ("... Use when ...")
+  README.md                     what it covers and how to call it
+```
+
+Every agent, command and skill needs frontmatter, and its `description` is what routes a request to it, so say when to use it. Then add an entry to [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json) with `name`, `source` (`./plugins/<name>`), `description`, `version`, `author`, `license`, `keywords` and `category: "gaming"`, and a row in the README's [Game Plugins](README.md#game-plugins) tables.
+
+### Translate
+
+The README and the manual in [`docs/`](docs/) are English only. A translation is welcome as `README.<language code>.md` at the root (for example `README.es.md`) that links back to `README.md`, or as a translated chapter next to the English one. Search open pull requests and the [`translation` label](https://github.com/HermeticOrmus/claude-code-game-development/issues?q=label%3Atranslation) first, so two people do not translate the same file.
+
+### Share what you built
+
+Made a game or a workflow with these plugins? Post it in [Discussions, under Show and tell](https://github.com/HermeticOrmus/claude-code-game-development/discussions/categories/show-and-tell), or tell us in a [feedback issue](https://github.com/HermeticOrmus/claude-code-game-development/issues/new?template=feedback.yml). What you share can become pantry evidence for the next Menu.
+
+### Test your change locally
+
+You need the `claude` CLI and `jq`. From the root of your checkout:
+
+```bash
+# Check the marketplace manifest and your plugin (add --strict on a new plugin: no warnings allowed)
+claude plugin validate .
+claude plugin validate plugins/<name>
+claude plugin validate --strict plugins/<name>
+
+# Load the plugin from its folder for one session, without installing it
+claude --plugin-dir plugins/<name>
+
+# Install from this checkout into a clean, throwaway config, the way a new user would
+(
+  export CLAUDE_CONFIG_DIR=$(mktemp -d)
+  claude plugin marketplace add ./
+  claude plugin install <name>@claude-code-game-development
+  claude plugin details <name>@claude-code-game-development
+  claude plugin list --json | jq '.[] | select((.errors // []) | length > 0)'
+)
+```
+
+`claude plugin details` lists the plugin's agents and skills (commands show up as skills) with their token cost. The last line prints nothing when every installed plugin loaded without errors.
+
+CI ([`.github/workflows/validate.yml`](.github/workflows/validate.yml)) runs the same checks on every pull request: it validates the marketplace and every plugin, installs all of them into a clean config, and fails if any plugin reports load errors. If this is your first contribution, the CI run waits until a maintainer approves it.
+
 ## Table of Contents
 
+- [Ways to contribute](#ways-to-contribute)
 - [Code of Conduct](#code-of-conduct)
 - [How Can I Contribute?](#how-can-i-contribute)
 - [Getting Started](#getting-started)
