@@ -1,0 +1,19 @@
+{
+  "name": "framework-migration",
+  "version": "1.2.2",
+  "description": "Framework updates, migration planning, and architectural transformation workflows",
+  "author": {
+    "name": "Seth Hobson",
+    "url": "https://github.com/wshobson"
+  },
+  "homepage": "https://github.com/wshobson/agents",
+  "repository": "https://github.com/wshobson/agents",
+  "license": "MIT",
+  "keywords": [
+    "migration",
+    "framework-upgrade",
+    "modernization",
+    "angular",
+    "react"
+  ]
+}

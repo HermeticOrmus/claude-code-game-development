@@ -615,7 +615,7 @@
         "distributed-systems"
       ],
       "category": "development",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/feature-development.md"
       ],
@@ -917,7 +917,7 @@
         "claude"
       ],
       "category": "ai-ml",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/langchain-agent.md",
         "./commands/ai-assistant.md",
@@ -1011,7 +1011,7 @@
         "mlflow"
       ],
       "category": "ai-ml",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/ml-pipeline.md"
       ],
@@ -1164,7 +1164,7 @@
         "grafana"
       ],
       "category": "operations",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/monitor-setup.md",
         "./commands/slo-implement.md"
@@ -1257,7 +1257,7 @@
         "gitops"
       ],
       "category": "infrastructure",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/kubernetes-architect.md"
@@ -1291,7 +1291,7 @@
         "infrastructure"
       ],
       "category": "infrastructure",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/cloud-architect.md",
@@ -1328,7 +1328,7 @@
         "gitlab-ci"
       ],
       "category": "infrastructure",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/workflow-automate.md"
       ],
@@ -1484,7 +1484,7 @@
         "react"
       ],
       "category": "modernization",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/legacy-modernize.md",
         "./commands/code-migrate.md",
@@ -1550,7 +1550,7 @@
         "data-modeling"
       ],
       "category": "database",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/database-architect.md",
@@ -1610,7 +1610,7 @@
         "devsecops"
       ],
       "category": "security",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/security-hardening.md",
         "./commands/security-sast.md",
@@ -1756,7 +1756,7 @@
         "express"
       ],
       "category": "api",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/backend-architect.md",
@@ -2078,7 +2078,7 @@
         "smart-contracts"
       ],
       "category": "blockchain",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/blockchain-developer.md"
@@ -2139,7 +2139,7 @@
         "pci"
       ],
       "category": "payments",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/payment-integration.md"
@@ -2227,7 +2227,7 @@
         "backend"
       ],
       "category": "languages",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/python-scaffold.md"
       ],
@@ -2264,7 +2264,7 @@
         "react"
       ],
       "category": "languages",
-      "strict": false,
+      "strict": true,
       "commands": [
         "./commands/typescript-scaffold.md"
       ],
@@ -2471,7 +2471,7 @@
         "testing"
       ],
       "category": "languages",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [
         "./agents/bash-pro.md",
@@ -2506,7 +2506,7 @@
         "essential"
       ],
       "category": "development",
-      "strict": false,
+      "strict": true,
       "commands": [],
       "agents": [],
       "skills": [
