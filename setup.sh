@@ -22,7 +22,7 @@ LIST=0
 UNINSTALL=0
 SCOPE="user"
 
-usage() { sed -n '2,16p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+usage() { awk 'NR==1{next} /^#/{sub(/^# ?/,""); print; next} {exit}' "${BASH_SOURCE[0]}"; }
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -58,7 +58,10 @@ if [[ -n "$ONLY" ]]; then
 fi
 
 if (( UNINSTALL )); then
-  for p in "${SELECTED[@]}"; do claude plugin uninstall "$p@$MARKETPLACE" || true; done
+  installed="$(claude plugin list 2>/dev/null || true)"
+  for p in "${SELECTED[@]}"; do
+    if grep -q "$p@$MARKETPLACE" <<<"$installed"; then claude plugin uninstall "$p@$MARKETPLACE"; fi
+  done
   [[ -z "$ONLY" ]] && claude plugin marketplace remove "$MARKETPLACE" || true
   echo "Removed. Restart Claude Code to unload the plugins."
   exit 0
