@@ -57,6 +57,7 @@
 - [Learning Paths](#learning-paths)
 - [Technology Stack](#technology-stack)
 - [Feedback](#feedback)
+- [Contribute](#contribute)
 - [Contributing](#contributing)
 - [Community](#community)
 - [FAQ](#faq)
@@ -1071,6 +1072,16 @@ This repository focuses on web-based game development using modern JavaScript/Ty
 ## Feedback
 
 Starred this? Tell us what worked and what is missing: [open a feedback issue](https://github.com/HermeticOrmus/claude-code-game-development/issues/new?template=feedback.yml). Every piece of feedback gets an answer, and changes that come from it are credited in the release notes.
+
+---
+
+## Contribute
+
+- Pick up work from the [Menu](pantry/MENU.md): every item has a Done-when anyone can check. Open items carry the [`menu` label](https://github.com/HermeticOrmus/claude-code-game-development/issues?q=is%3Aopen+label%3Amenu), and [good first issues](https://github.com/HermeticOrmus/claude-code-game-development/contribute) are on the contribute page.
+- Claude picked the wrong agent or skill? File a [routing miss](https://github.com/HermeticOrmus/claude-code-game-development/issues/new?template=routing-miss.yml).
+- Want a new plugin, agent, skill or command? File a [plugin proposal](https://github.com/HermeticOrmus/claude-code-game-development/issues/new?template=plugin-proposal.yml), or tell us in a [feedback issue](https://github.com/HermeticOrmus/claude-code-game-development/issues/new?template=feedback.yml).
+- Show what you built in [Discussions](https://github.com/HermeticOrmus/claude-code-game-development/discussions).
+- Layout and the local test loop: [Ways to contribute](CONTRIBUTING.md#ways-to-contribute).
 
 ---
 
