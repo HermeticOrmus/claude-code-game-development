@@ -1,0 +1,23 @@
+{
+  "name": "asset-pipelines",
+  "version": "2.0.0",
+  "description": "Game asset pipelines: import settings, texture atlasing, LOD generation, audio compression, and CI asset validation for Godot and Unity.",
+  "author": {
+    "name": "Diego Bodart",
+    "url": "https://github.com/HermeticOrmus"
+  },
+  "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "license": "MIT",
+  "keywords": [
+    "assets",
+    "import",
+    "texture-atlas",
+    "lod",
+    "compression",
+    "ci",
+    "godot",
+    "unity",
+    "gamedev"
+  ]
+}

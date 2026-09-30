@@ -10,6 +10,501 @@
   },
   "plugins": [
     {
+      "name": "godot-development",
+      "source": "./plugins/godot-development",
+      "description": "Godot 4 development: Node tree and scene design, signals, resources, physics, animation, typed GDScript or C#, GDExtension, and GUT tests.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "godot",
+        "godot4",
+        "gdscript",
+        "csharp",
+        "gdextension",
+        "gut",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "unity-development",
+      "source": "./plugins/unity-development",
+      "description": "Unity 6 development: MonoBehaviour or DOTS architecture, URP and HDRP, Addressables, the Input System, ScriptableObjects, and idiomatic C#.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "unity",
+        "unity6",
+        "csharp",
+        "dots",
+        "urp",
+        "addressables",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "unreal-engine",
+      "source": "./plugins/unreal-engine",
+      "description": "Unreal Engine 5 development: Gameplay Framework, Blueprint or C++, the Gameplay Ability System, Enhanced Input, replication, and Lumen and Nanite.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "unreal",
+        "unreal-engine-5",
+        "cpp",
+        "blueprints",
+        "gas",
+        "replication",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "game-architecture",
+      "source": "./plugins/game-architecture",
+      "description": "Game code architecture: game loops, ECS, event buses, data resources, service locators, scene management, and state stacks.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "architecture",
+        "game-loop",
+        "ecs",
+        "event-bus",
+        "design-patterns",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "input-systems",
+      "source": "./plugins/input-systems",
+      "description": "Game input systems: action maps, gamepad deadzones, input buffering, rebinding, touch controls, and rumble across Godot, Unity, and Unreal.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "input",
+        "controls",
+        "gamepad",
+        "rebinding",
+        "touch",
+        "godot",
+        "unity",
+        "unreal",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "save-systems",
+      "source": "./plugins/save-systems",
+      "description": "Game save systems: serialization, save file versioning and migration, atomic writes, slots, settings persistence, and platform cloud saves.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "save-system",
+        "serialization",
+        "persistence",
+        "migration",
+        "cloud-saves",
+        "godot",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "localization",
+      "source": "./plugins/localization",
+      "description": "Game localization: string extraction, gettext PO files, ICU plurals, right-to-left layout, CJK font fallback, and pseudo-localization.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "localization",
+        "i18n",
+        "l10n",
+        "gettext",
+        "rtl",
+        "fonts",
+        "godot",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "shader-programming",
+      "source": "./plugins/shader-programming",
+      "description": "Real-time shaders for games: Godot shading language, vertex and fragment stages, common effects, post-processing, and shader performance.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "shaders",
+        "glsl",
+        "godot-shaders",
+        "vfx",
+        "post-processing",
+        "rendering",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "animation-systems",
+      "source": "./plugins/animation-systems",
+      "description": "Game animation systems: blend trees, state machines, IK, root motion, and animation events across Godot AnimationTree, Unity Animator, and Unreal AnimGraph.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "animation",
+        "blend-trees",
+        "inverse-kinematics",
+        "root-motion",
+        "godot",
+        "unity",
+        "unreal",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "audio-systems",
+      "source": "./plugins/audio-systems",
+      "description": "Game audio implementation: bus architecture, spatial audio, dynamic music, sound pooling, and FMOD or Wwise integration.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "audio",
+        "sound",
+        "music",
+        "spatial-audio",
+        "fmod",
+        "wwise",
+        "godot",
+        "unity",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "ui-game-design",
+      "source": "./plugins/ui-game-design",
+      "description": "Game UI: HUDs, menu stacks, inventory grids, dialogue boxes, settings screens, and accessibility with Godot Control nodes.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "game-ui",
+        "hud",
+        "menus",
+        "inventory",
+        "dialogue",
+        "accessibility",
+        "godot",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "ai-game-behavior",
+      "source": "./plugins/ai-game-behavior",
+      "description": "NPC and enemy AI for games: behavior trees, state machines, utility AI, GOAP, navmesh pathfinding, and perception systems.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "game-ai",
+        "npc",
+        "behavior-trees",
+        "fsm",
+        "utility-ai",
+        "goap",
+        "pathfinding",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "physics-simulation",
+      "source": "./plugins/physics-simulation",
+      "description": "Game physics: body types, collision layers, character controllers, raycasts, triggers, joints, and physics performance in Godot and Unity.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "physics",
+        "collision",
+        "rigidbody",
+        "character-controller",
+        "raycast",
+        "godot",
+        "unity",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "procedural-generation",
+      "source": "./plugins/procedural-generation",
+      "description": "Procedural generation: noise terrain, BSP and cellular automata dungeons, Wave Function Collapse, seeded randomness, and solvability checks.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "procedural-generation",
+        "procgen",
+        "noise",
+        "wave-function-collapse",
+        "dungeons",
+        "roguelike",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "level-design",
+      "source": "./plugins/level-design",
+      "description": "Level design and construction: greyboxing, TileMaps, modular kits, navmesh baking, level streaming, and environmental storytelling.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "level-design",
+        "greybox",
+        "tilemap",
+        "navmesh",
+        "streaming",
+        "godot",
+        "unity",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "playtesting",
+      "source": "./plugins/playtesting",
+      "description": "Playtesting and game analytics: session design, observation protocols, telemetry schemas, death heatmaps, funnels, and A/B tests.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "playtesting",
+        "analytics",
+        "telemetry",
+        "heatmaps",
+        "ab-testing",
+        "ux-research",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "performance-optimization",
+      "source": "./plugins/performance-optimization",
+      "description": "Game performance: profiling methodology, draw call batching, LODs, occlusion culling, object pooling, and GDScript hot path fixes.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "performance",
+        "profiling",
+        "optimization",
+        "draw-calls",
+        "lod",
+        "pooling",
+        "godot",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "asset-pipelines",
+      "source": "./plugins/asset-pipelines",
+      "description": "Game asset pipelines: import settings, texture atlasing, LOD generation, audio compression, and CI asset validation for Godot and Unity.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "assets",
+        "import",
+        "texture-atlas",
+        "lod",
+        "compression",
+        "ci",
+        "godot",
+        "unity",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "multiplayer-networking",
+      "source": "./plugins/multiplayer-networking",
+      "description": "Multiplayer netcode: rollback, lockstep, client prediction with reconciliation, lag compensation, bandwidth budgets, NAT traversal, and Godot or Unity networking.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "multiplayer",
+        "netcode",
+        "rollback",
+        "lockstep",
+        "client-prediction",
+        "lag-compensation",
+        "godot",
+        "unity",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "monetization-ethics",
+      "source": "./plugins/monetization-ethics",
+      "description": "Ethical game monetization: dark pattern audits, cosmetics-only stores, fair battle passes, platform IAP flows, and player spending protection.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "monetization",
+        "iap",
+        "battle-pass",
+        "dark-patterns",
+        "ethics",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
+      "name": "libre-gamedev-hooks",
+      "source": "./plugins/libre-gamedev-hooks",
+      "description": "Optional game dev hooks: a one-line note when the project is Godot, Unity, Unreal, or a web game, confirmation before touching secrets or signing keys or running destructive commands, and a check after writes.",
+      "version": "2.0.0",
+      "author": {
+        "name": "Diego Bodart",
+        "url": "https://github.com/HermeticOrmus"
+      },
+      "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+      "license": "MIT",
+      "keywords": [
+        "hooks",
+        "safety",
+        "godot",
+        "unity",
+        "unreal",
+        "gamedev"
+      ],
+      "category": "gaming"
+    },
+    {
       "name": "code-documentation",
       "source": "./plugins/code-documentation",
       "description": "Documentation generation, code explanation, and technical writing with automated doc generation and tutorial creation",

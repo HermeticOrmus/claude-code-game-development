@@ -1,0 +1,20 @@
+{
+  "name": "game-architecture",
+  "version": "2.0.0",
+  "description": "Game code architecture: game loops, ECS, event buses, data resources, service locators, scene management, and state stacks.",
+  "author": {
+    "name": "Diego Bodart",
+    "url": "https://github.com/HermeticOrmus"
+  },
+  "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "license": "MIT",
+  "keywords": [
+    "architecture",
+    "game-loop",
+    "ecs",
+    "event-bus",
+    "design-patterns",
+    "gamedev"
+  ]
+}

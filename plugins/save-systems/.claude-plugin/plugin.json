@@ -1,0 +1,21 @@
+{
+  "name": "save-systems",
+  "version": "2.0.0",
+  "description": "Game save systems: serialization, save file versioning and migration, atomic writes, slots, settings persistence, and platform cloud saves.",
+  "author": {
+    "name": "Diego Bodart",
+    "url": "https://github.com/HermeticOrmus"
+  },
+  "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "license": "MIT",
+  "keywords": [
+    "save-system",
+    "serialization",
+    "persistence",
+    "migration",
+    "cloud-saves",
+    "godot",
+    "gamedev"
+  ]
+}

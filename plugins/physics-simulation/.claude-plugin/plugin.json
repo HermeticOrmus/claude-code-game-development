@@ -1,0 +1,22 @@
+{
+  "name": "physics-simulation",
+  "version": "2.0.0",
+  "description": "Game physics: body types, collision layers, character controllers, raycasts, triggers, joints, and physics performance in Godot and Unity.",
+  "author": {
+    "name": "Diego Bodart",
+    "url": "https://github.com/HermeticOrmus"
+  },
+  "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "license": "MIT",
+  "keywords": [
+    "physics",
+    "collision",
+    "rigidbody",
+    "character-controller",
+    "raycast",
+    "godot",
+    "unity",
+    "gamedev"
+  ]
+}

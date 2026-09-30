@@ -1,0 +1,23 @@
+{
+  "name": "multiplayer-networking",
+  "version": "2.0.0",
+  "description": "Multiplayer netcode: rollback, lockstep, client prediction with reconciliation, lag compensation, bandwidth budgets, NAT traversal, and Godot or Unity networking.",
+  "author": {
+    "name": "Diego Bodart",
+    "url": "https://github.com/HermeticOrmus"
+  },
+  "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "license": "MIT",
+  "keywords": [
+    "multiplayer",
+    "netcode",
+    "rollback",
+    "lockstep",
+    "client-prediction",
+    "lag-compensation",
+    "godot",
+    "unity",
+    "gamedev"
+  ]
+}

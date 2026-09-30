@@ -1,0 +1,20 @@
+{
+  "name": "monetization-ethics",
+  "version": "2.0.0",
+  "description": "Ethical game monetization: dark pattern audits, cosmetics-only stores, fair battle passes, platform IAP flows, and player spending protection.",
+  "author": {
+    "name": "Diego Bodart",
+    "url": "https://github.com/HermeticOrmus"
+  },
+  "homepage": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "repository": "https://github.com/HermeticOrmus/claude-code-game-development",
+  "license": "MIT",
+  "keywords": [
+    "monetization",
+    "iap",
+    "battle-pass",
+    "dark-patterns",
+    "ethics",
+    "gamedev"
+  ]
+}
