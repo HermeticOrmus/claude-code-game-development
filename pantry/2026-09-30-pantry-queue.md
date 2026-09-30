@@ -24,6 +24,7 @@ Sources for this run: [competitor map](2026-09-30-competitor-map.md), [X mine](2
 ## Explicitly not stocked (and why)
 
 - Japanese README: parked, invitation to its author pending
+- Add frontmatter to the 67 derived command files (`derived-command-frontmatter`): parked, the same work is already open as good first issue #4
 - Our own engine MCP server: not stocked. Unity, Epic and Roblox ship first-party editor bridges and community servers are well established (competitor map), so the pairing docs in atom 3 come first.
 - Changes inside `tools/meta-prompting-framework/`: not stocked. It is third-party code credited in `NOTICE.md`; fixes belong upstream.
 - `templates/`, `prompts/`, `resources/` and `community/` directories: not stocked this run. The README lists them as not added yet, but no competitor, X or people row asks for them.
