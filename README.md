@@ -1090,6 +1090,8 @@ This repository focuses on web-based game development using modern JavaScript/Ty
 
 Starred this? Tell us what worked and what is missing: [open a feedback issue](https://github.com/HermeticOrmus/claude-code-game-development/issues/new?template=feedback.yml). Every piece of feedback gets an answer, and changes that come from it are credited in the release notes.
 
+Cracks we found and sealed: [LEDGER.md](LEDGER.md).
+
 ---
 
 ## Contribute
