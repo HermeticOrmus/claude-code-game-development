@@ -1,0 +1,20 @@
+{
+  "name": "machine-learning-ops",
+  "version": "1.2.1",
+  "description": "ML model training pipelines, hyperparameter tuning, model deployment automation, experiment tracking, and MLOps workflows",
+  "author": {
+    "name": "Seth Hobson",
+    "url": "https://github.com/wshobson"
+  },
+  "homepage": "https://github.com/wshobson/agents",
+  "repository": "https://github.com/wshobson/agents",
+  "license": "MIT",
+  "keywords": [
+    "machine-learning",
+    "mlops",
+    "model-training",
+    "tensorflow",
+    "pytorch",
+    "mlflow"
+  ]
+}
