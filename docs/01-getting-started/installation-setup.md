@@ -285,7 +285,7 @@ mkdir C:\GameDev
 cd C:\GameDev
 
 # Clone this repository (if using Git)
-git clone https://github.com/yourusername/claude-code-game-development.git
+git clone https://github.com/HermeticOrmus/claude-code-game-development.git
 
 # Or download and extract the ZIP from GitHub
 ```
@@ -377,7 +377,7 @@ mkdir ~/GameDev
 cd ~/GameDev
 
 # Clone repository
-git clone https://github.com/yourusername/claude-code-game-development.git
+git clone https://github.com/HermeticOrmus/claude-code-game-development.git
 ```
 
 **macOS-Specific Tips**:
@@ -465,7 +465,7 @@ mkdir ~/GameDev
 cd ~/GameDev
 
 # Clone repository
-git clone https://github.com/yourusername/claude-code-game-development.git
+git clone https://github.com/HermeticOrmus/claude-code-game-development.git
 ```
 
 **Linux-Specific Tips**:
