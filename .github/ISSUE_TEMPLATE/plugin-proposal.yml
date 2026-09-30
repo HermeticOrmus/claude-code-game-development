@@ -1,0 +1,49 @@
+name: Plugin proposal
+description: Propose a new game development plugin, agent, skill or command for this marketplace.
+title: "[Proposal] "
+labels: ["plugin-proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Good proposals name a real job game developers do (an engine, a system, a pipeline step), what Claude gets wrong today without it, and how anyone could check it works. Accepted proposals can become Menu items that you or someone else builds.
+  - type: input
+    id: name
+    attributes:
+      label: Working name
+      placeholder: "kebab-case, e.g. bevy-development"
+    validations:
+      required: true
+  - type: textarea
+    id: job
+    attributes:
+      label: The job it does
+      description: Who needs it, and what they are trying to get done.
+      placeholder: "e.g. solo developers building a Bevy game who want ECS systems, plugins and schedules written the Bevy way"
+    validations:
+      required: true
+  - type: textarea
+    id: gap
+    attributes:
+      label: What goes wrong today without it
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Done when
+      description: A check anyone could run to see it works. For example, a prompt, the agent or skill that should answer, and what the answer must contain.
+      placeholder: "e.g. claude plugin validate plugins/bevy-development passes, and asking for a fixed-timestep movement system routes to bevy-development:bevy-engineer"
+    validations:
+      required: true
+  - type: textarea
+    id: prior
+    attributes:
+      label: Prior art
+      description: Other packs, tools or docs that do something similar, with links. The pantry competitor map (pantry/) lists what we already know about.
+  - type: checkboxes
+    id: build
+    attributes:
+      label: Want to build it?
+      options:
+        - label: I would like to build this and open a pull request.
