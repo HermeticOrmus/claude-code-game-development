@@ -224,6 +224,23 @@ From a checkout, `./setup.sh --only godot-development,multiplayer-networking` in
 
 Used 1.x, when this marketplace was named `claude-code-workflows`? Read [Migrating from 1.x](#migrating-from-1x) first.
 
+### Install in Grok Build
+
+Grok Build loads the same plugin folders. Add the marketplace and install a plugin from a terminal:
+
+```bash
+grok plugin marketplace add HermeticOrmus/claude-code-game-development
+grok plugin install godot-development@claude-code-game-development
+```
+
+Or install one plugin straight from its folder, with no marketplace:
+
+```bash
+grok plugin install HermeticOrmus/claude-code-game-development#plugins/godot-development
+```
+
+From a checkout, `./setup.sh --grok` installs every plugin through the `grok` CLI; `--only`, `--list`, and `--uninstall` work the same way. Grok Build uninstalls plugins by name only, and 66 plugin names here are also in [LibreUIUX](https://github.com/HermeticOrmus/LibreUIUX-Claude-Code) (both packs take them from wshobson/agents). If you install both packs, remove one with `./setup.sh --grok --uninstall` rather than `grok plugin uninstall <name>`, which can take the other pack's copy. The `libre-gamedev-hooks` plugin uses a hook format Grok Build supports, but it has not been verified in a live Grok session yet.
+
 ### Build your first game
 
 Get your first game running in **10 minutes**:
