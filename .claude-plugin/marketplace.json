@@ -1,13 +1,12 @@
 {
-  "name": "claude-code-workflows",
+  "name": "claude-code-game-development",
   "owner": {
-    "name": "Seth Hobson",
-    "email": "seth@major7apps.com",
-    "url": "https://github.com/wshobson"
+    "name": "Diego Bodart",
+    "url": "https://github.com/HermeticOrmus"
   },
   "metadata": {
-    "description": "Production-ready workflow orchestration with 64 focused plugins, 87 specialized agents, and 44 tools - optimized for granular installation and minimal token usage",
-    "version": "1.2.0"
+    "description": "Claude Code plugins for game development: 20 game dev plugins (Godot, Unity, Unreal, rendering, AI, netcode, shipping) plus optional hooks, alongside 66 general development plugins derived from wshobson/agents.",
+    "version": "2.0.0"
   },
   "plugins": [
     {
