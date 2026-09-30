@@ -2,6 +2,15 @@
 
 All notable changes to this repository are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+
+- A public pantry in [`pantry/`](pantry/README.md): a competitor map, an X mine, a people mine and a pantry queue of Goal atoms, each row with its source, plus the templates for the next run.
+- [`pantry/MENU.md`](pantry/MENU.md), generated from the pantry queue, which names one up-next item with a Done-when anyone can check.
+- Two issue forms: routing miss (Claude picked the wrong agent or skill) and plugin proposal, with the `routing-miss` and `plugin-proposal` labels.
+- A "Ways to contribute" section at the top of `CONTRIBUTING.md` (Menu items, routing misses, new plugins and their layout, translations, sharing what you built) with the local test loop, and a short "Contribute" section in the README.
+
 ## [2.0.0] - 2026-09-30
 
 This is a major version because the plugin marketplace changes its name. In 1.x it was `claude-code-workflows`, the same name as [wshobson/agents](https://github.com/wshobson/agents), which meant you could not add both. It is now `claude-code-game-development`. If you added this repo before, read [Migrating from 1.x](README.md#migrating-from-1x): check where `claude-code-workflows` points, remove it only if it points here, then add this repo again.
