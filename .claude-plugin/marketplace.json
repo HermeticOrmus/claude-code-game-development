@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Claude Code plugins for game development: 20 game dev plugins (Godot, Unity, Unreal, rendering, AI, netcode, shipping) plus optional hooks, alongside 66 general development plugins derived from wshobson/agents.",
-    "version": "2.0.0"
+    "version": "2.1.0"
   },
   "plugins": [
     {
