@@ -65,7 +65,7 @@ claude --plugin-dir plugins/<name>
 
 `claude plugin details` lists the plugin's agents and skills (commands show up as skills) with their token cost. The last line prints nothing when every installed plugin loaded without errors.
 
-CI ([`.github/workflows/validate.yml`](.github/workflows/validate.yml)) runs the same checks on every pull request: it validates the marketplace and every plugin, installs all of them into a clean config, and fails if any plugin reports load errors. If this is your first contribution, the CI run waits until a maintainer approves it.
+CI ([`.github/workflows/check.yml`](.github/workflows/check.yml), running `bash scripts/check.sh`) runs the same checks on every pull request: it validates the marketplace and every plugin, installs all of them into a clean config, and fails if any plugin reports load errors. If this is your first contribution, the CI run waits until a maintainer approves it.
 
 ## Table of Contents
 
