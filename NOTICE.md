@@ -99,7 +99,7 @@ These 21 plugins come from [LibreGameDev-Claude-Code](https://github.com/Hermeti
 
 ## Original to this repository
 
-The `docs/` curriculum, `DOCUMENTATION_SUMMARY.md`, `tools/README.md`, the root `README.md`, `CONTRIBUTING.md`, and `CODE_OF_CONDUCT.md`, and the release tooling (`setup.sh`, `.github/workflows/validate.yml`, `.github/ISSUE_TEMPLATE/feedback.yml`) are covered by the repository [LICENSE](LICENSE).
+The `docs/` curriculum, `DOCUMENTATION_SUMMARY.md`, `tools/README.md`, the root `README.md`, `CONTRIBUTING.md`, and `CODE_OF_CONDUCT.md`, and the release tooling (`setup.sh`, `scripts/check.sh`, `.github/workflows/check.yml`, `.github/ISSUE_TEMPLATE/feedback.yml`) are covered by the repository [LICENSE](LICENSE).
 
 ## wshobson/agents license
 
